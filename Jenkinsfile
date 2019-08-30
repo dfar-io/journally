@@ -34,7 +34,7 @@ pipeline {
     stage('Deploy UI') {
       when { branch 'master' }
       steps {
-        dir("ui/dist") {
+        dir("ui/dist/blu-journal") {
           azureUpload blobProperties: [
             cacheControl: '',
             contentEncoding: '',
