@@ -21,12 +21,14 @@ pipeline {
     stage('Deploy API') {
       when { branch 'master' }
       steps {
-        azureFunctionAppPublish appName: "blujournal",
+        dir("api") {
+          azureFunctionAppPublish appName: "blujournal",
           azureCredentialsId: 'jenkins-sp',
           resourceGroup: "bluJournal-prod-rg",
           sourceDirectory: 'bin/Release/netcoreapp2.1',
           targetDirectory: '',
           filePath: ''
+        }
       }
     }
     stage('Deploy UI') {
