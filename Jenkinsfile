@@ -14,7 +14,7 @@ pipeline {
       steps {
         dir("ui") {
           sh 'npm i'
-          sh 'npm run build -- -prod'
+          sh 'npm run build -- --prod'
         }
       }
     }
