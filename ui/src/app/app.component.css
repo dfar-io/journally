@@ -1,0 +1,26 @@
+textarea {
+  background-color: transparent;
+  border: 0;
+  height: 80vh;
+  color: #fff;
+  font-size: 1.5rem;
+  margin: 1rem;
+}
+
+.form-control:focus {
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  box-shadow: none;
+}
+
+button {
+  margin-left: auto;
+  margin-right: 0;
+  background-color: transparent;
+  border-color: #fff;
+}
+
+h1 {
+  text-align: right;
+}

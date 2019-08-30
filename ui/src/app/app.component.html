@@ -1,0 +1,23 @@
+<nav class="navbar">
+  <a class="navbar-brand">BluJournal</a>
+</nav>
+<div class="container">
+  <div class="row">
+    <h1 class="col">{{ displayDate() }}</h1>
+  </div>
+  <div class="row">
+    <form class="col">
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          id="content"
+          rows="10"
+          autofocus
+        ></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <button class="col" type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</div>

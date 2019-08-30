@@ -1,0 +1,4 @@
+# Terraform
+**/.terraform
+**/*.beconf.tfvars
+**/*.secrets.tfvars
