@@ -1,21 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Entry } from './entries/entry';
+import { EntryService } from './entries/entry.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'blu-journal';
-  date = new Date();
+export class AppComponent implements OnInit {
+  entry: Entry;
 
-  displayDate() {
-    return (
-      this.date.getFullYear() +
-      '.' +
-      this.date.getMonth() +
-      '.' +
-      this.date.getDate()
-    );
+  constructor(private entryService: EntryService) {}
+
+  ngOnInit() {
+    this.entryService.getEntries().subscribe(entries => {
+      this.entry = entries[0];
+    });
   }
 }
