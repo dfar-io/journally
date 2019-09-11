@@ -1,7 +1,7 @@
-<nav class="navbar">
-  <a class="navbar-brand">BluJournal</a>
-</nav>
 <div class="container">
+  <nav class="navbar">
+    <a class="navbar-brand">BluJournal</a>
+  </nav>
   <div class="row">
     <h1 class="col">{{ entry?.date }}</h1>
   </div>
@@ -19,6 +19,8 @@
     </form>
   </div>
   <div class="row">
-    <button class="col" type="submit" class="btn btn-primary">Submit</button>
+    <div class="col d-flex flex-row-reverse">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
   </div>
 </div>
