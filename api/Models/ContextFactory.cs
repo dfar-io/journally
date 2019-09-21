@@ -9,7 +9,7 @@ namespace HD.BluJournal.Models
     public Context CreateDbContext(string[] args)
     {
       var optionsBuilder = new DbContextOptionsBuilder<Context>();
-      optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("SqlConnectionString"));
+      optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("connectionString"));
 
       return new Context(optionsBuilder.Options);
     }
