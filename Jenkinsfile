@@ -49,8 +49,18 @@ pipeline {
         }
       }
     }
+    stage('Purge CDN') {
+      when { branch 'master' }
+      steps {
+        echo 'Should purge CDN here to reflect new changes...'
+        slackSend color: 'good', message: "bluJournal deployment successful => https://blujournal.com"
+      }
+    }
   }
   post {
+    failure {
+      slackSend color: 'danger', message: "bluJournal deployment failed (<${env.BUILD_URL}|Open>)"
+    }
     always {
       cleanWs()
     }
