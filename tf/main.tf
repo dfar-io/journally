@@ -8,7 +8,7 @@ provider "azurerm" {
 }
 
 variable "prefix" {
-  default = "bluJournal"
+  default = "blujournal"
 }
 
 variable "env" {}
@@ -24,6 +24,9 @@ module "app-insights" {
   location = "${azurerm_resource_group.rg.location}"
   name     = "${var.prefix}-${var.env}-rg"
   rg_name  = "${azurerm_resource_group.rg.name}"
+  web_tests = {
+    "${var.prefix}-${var.env}-uptime" = "https://blujournal.com"
+  }
 }
 
 module "function-app" {
@@ -50,6 +53,15 @@ module "key-vault" {
   rg_location       = "${azurerm_resource_group.rg.location}"
   rg_name           = "${azurerm_resource_group.rg.name}"
   tenant_id         = "f3cd45d5-927c-47e7-838a-f48b95dc4fd7"
+}
+
+module "sql-server" {
+  source    = "dfar-io/sql-server/azurerm"
+  version   = "1.0.2"
+  name      = "${var.prefix}-${var.env}-sql"
+  location  = "${azurerm_resource_group.rg.location}"
+  rg_name   = "${azurerm_resource_group.rg.name}"
+  databases = ["blujournal"]
 }
 
 resource "azurerm_cdn_profile" "cdn" {

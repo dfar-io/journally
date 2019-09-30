@@ -52,7 +52,7 @@ pipeline {
     stage('Purge CDN') {
       when { branch 'master' }
       steps {
-        sh 'az cdn endpoint purge -g bluJournal-prod-rg  --profile-name bluJournal-prod-cdn --name bluJournal-prod-cdnEndpoint --content-paths /'
+        sh 'az cdn endpoint purge -g blujournal-prod-rg  --profile-name blujournal-prod-cdn --name blujournal-prod-cdnEndpoint --content-paths /'
         slackSend color: 'good', message: "bluJournal deployment successful => https://blujournal.com"
       }
     }
