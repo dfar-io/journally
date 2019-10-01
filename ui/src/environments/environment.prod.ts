@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://blujournal.azurewebsites.net/api/'
+  apiUrl: 'https://api.blujournal.com/'
 };
