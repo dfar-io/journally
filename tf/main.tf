@@ -22,7 +22,7 @@ module "app-insights" {
   source   = "dfar-io/app-insights/azurerm"
   version  = "1.0.1"
   location = "${azurerm_resource_group.rg.location}"
-  name     = "${var.prefix}-${var.env}-rg"
+  name     = "${var.prefix}-${var.env}-ai"
   rg_name  = "${azurerm_resource_group.rg.name}"
   web_tests = {
     "${var.prefix}-${var.env}-uptime" = "https://blujournal.com"
@@ -42,6 +42,7 @@ module "function-app" {
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${module.app-insights.instrumentation_key}"
+    connectionString               = "Server=tcp:${module.sql-server.sqlserver_name}.database.windows.net:1433;Initial Catalog=blujournal;Persist Security Info=False;User ID=${module.sql-server.sqlserver_administrator_login};Password=${module.sql-server.sqlserver_administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
 }
 
@@ -57,7 +58,7 @@ module "key-vault" {
 
 module "sql-server" {
   source    = "dfar-io/sql-server/azurerm"
-  version   = "1.0.2"
+  version   = "1.1.1"
   name      = "${var.prefix}-${var.env}-sql"
   location  = "${azurerm_resource_group.rg.location}"
   rg_name   = "${azurerm_resource_group.rg.name}"
@@ -77,10 +78,12 @@ resource "azurerm_cdn_endpoint" "endpoint" {
   location                      = "${azurerm_resource_group.rg.location}"
   resource_group_name           = "${azurerm_resource_group.rg.name}"
   querystring_caching_behaviour = "NotSet"
+  origin_host_header            = "blujournalprodfa.z13.web.core.windows.net"
 
   origin {
     name      = "blujournal"
     host_name = "blujournalprodfa.z13.web.core.windows.net"
+
   }
 }
 

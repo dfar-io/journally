@@ -18,6 +18,14 @@ pipeline {
         }
       }
     }
+    // make sure `connectionString` env. variable is set.
+    stage('Deploy DB Migrations') {
+      steps {
+        dir("api") {
+          sh 'dotnet ef database update'
+        }
+      }
+    }
     stage('Deploy API') {
       when { branch 'master' }
       steps {
