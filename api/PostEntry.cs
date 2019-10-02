@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using HD.BluJournal.Models;
 using System.Linq;
+using HD.BluJournal.Helpers;
 
 namespace HD.BluJournal
 {
@@ -27,16 +28,13 @@ namespace HD.BluJournal
         ILogger log)
     {
       if (req.ContentLength <= 0)
-      {
-        return Return400("No content included in request.");
-      }
+        return HttpCodeHelper.EmptyPOSTBody();
 
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
       Entry data = JsonConvert.DeserializeObject<Entry>(requestBody);
       if (!data.IsValid)
       {
-        return Return400("Entry returned is invalid, make sure payload is " +
-        "constructed correctly.");
+        return HttpCodeHelper.InvalidPayload();
       }
       var date = data.Date.ToString("yyyy-MM-dd");
 
@@ -60,11 +58,6 @@ namespace HD.BluJournal
         date = date,
         content = data.Content
       });
-    }
-
-    private static IActionResult Return400(string message)
-    {
-      return new BadRequestObjectResult(message);
     }
   }
 }
