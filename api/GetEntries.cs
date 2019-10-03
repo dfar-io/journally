@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using HD.BluJournal.Models;
 using System.Linq;
+using System.Net;
 
 namespace HD.BluJournal
 {
