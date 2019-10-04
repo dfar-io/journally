@@ -3,6 +3,15 @@
   "extensions": {
     "http": {
       "routePrefix": ""
+    },
+    "Swashbuckle": {
+      "Documents": [
+        {
+          "Title": "BluJournal API",
+          "Version": "v1",
+          "Description": "Provides access to BluJournal resources."
+        }
+      ]
     }
   }
 }
