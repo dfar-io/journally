@@ -5,6 +5,7 @@ textarea {
   color: #fff;
   font-size: 1rem;
   resize: none;
+  padding: 1rem 0;
 }
 
 .form-control:focus {
@@ -45,6 +46,10 @@ textarea::-webkit-scrollbar-thumb {
     color-stop(0.72, rgb(73, 125, 189)),
     color-stop(0.86, rgb(28, 58, 148))
   );
+}
+
+.navbar {
+  padding: 0.5rem 0;
 }
 
 @media (min-width: 768px) {
