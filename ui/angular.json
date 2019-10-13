@@ -21,11 +21,18 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/apple-touch-icon.png",
+              "src/apple-touch-icon-57x57.png",
+              "src/apple-touch-icon-72x72.png",
+              "src/apple-touch-icon-76x76.png",
+              "src/apple-touch-icon-114x114.png",
+              "src/apple-touch-icon-120x120.png",
+              "src/apple-touch-icon-144x144.png",
+              "src/apple-touch-icon-152x152.png",
+              "src/apple-touch-icon-180x180.png"
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -86,11 +93,18 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/apple-touch-icon.png",
+              "src/apple-touch-icon-57x57.png",
+              "src/apple-touch-icon-72x72.png",
+              "src/apple-touch-icon-76x76.png",
+              "src/apple-touch-icon-114x114.png",
+              "src/apple-touch-icon-120x120.png",
+              "src/apple-touch-icon-144x144.png",
+              "src/apple-touch-icon-152x152.png",
+              "src/apple-touch-icon-180x180.png"
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         },
@@ -102,9 +116,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -120,6 +132,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "blu-journal"
 }
