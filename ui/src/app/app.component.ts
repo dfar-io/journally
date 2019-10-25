@@ -13,8 +13,18 @@ export class AppComponent implements OnInit {
   constructor(private entryService: EntryService) {}
 
   ngOnInit() {
-    this.entryService.getEntries().subscribe(entries => {
-      this.entry = entries[0];
-    });
+    // this.entryService.getEntries().subscribe(entries => {
+    // this.entry = entries[0]; since it's not doing anything right now.
+    // });
+    const currentDate = new Date();
+    this.entry = new Entry();
+    this.entry.date =
+      currentDate.getMonth() +
+      1 +
+      '-' +
+      currentDate.getDate() +
+      '-' +
+      currentDate.getFullYear();
+    this.entry.content = null;
   }
 }
