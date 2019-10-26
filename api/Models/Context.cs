@@ -10,5 +10,6 @@ namespace HD.BluJournal.Models
     { }
 
     public DbSet<Entry> Entries { get; set; }
+    public DbSet<User> Users { get; set; }
   }
 }

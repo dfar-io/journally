@@ -1,3 +1,5 @@
+using HD.BluJournal.DTOs;
+
 namespace HD.BluJournal.Models
 {
   public class User

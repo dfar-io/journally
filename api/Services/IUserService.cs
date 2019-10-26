@@ -5,7 +5,7 @@ namespace HD.BluJournal.Services
 {
   public interface IUserService
   {
-    User Authenticate(string username, string password);
-    IEnumerable<User> GetAll();
+    User Authenticate(string email, string password);
+    User Create(User user, string password);
   }
 }
