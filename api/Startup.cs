@@ -15,7 +15,7 @@ namespace HD.BluJournal
     public override void Configure(IFunctionsHostBuilder builder)
     {
       string SqlConnection =
-        Environment.GetEnvironmentVariable("connectionString");
+        Environment.GetEnvironmentVariable("BLUJOURNAL_CONN_STR");
 
       builder.Services.AddDbContext<Context>(
         options => options.UseSqlServer(SqlConnection)

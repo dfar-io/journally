@@ -18,7 +18,7 @@ pipeline {
         }
       }
     }
-    // make sure `connectionString` env. variable is set.
+    // make sure `BLUJOURNAL_CONN_STR` env. variable is set.
     stage('Deploy DB Migrations') {
       steps {
         dir("api") {

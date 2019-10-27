@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.BluJournal.Helpers
@@ -18,6 +19,11 @@ namespace HD.BluJournal.Helpers
     public static IActionResult Return400(string message)
     {
       return new BadRequestObjectResult(message);
+    }
+
+    public static IActionResult Return500()
+    {
+      return new StatusCodeResult(StatusCodes.Status500InternalServerError);
     }
   }
 }
