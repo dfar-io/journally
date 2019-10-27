@@ -49,6 +49,7 @@ module "function-app" {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${module.app-insights.instrumentation_key}"
     BLUJOURNAL_CONN_STR            = "Server=tcp:${module.sql-server.sqlserver_name}.database.windows.net:1433;Initial Catalog=blujournal;Persist Security Info=False;User ID=${module.sql-server.sqlserver_administrator_login};Password=${module.sql-server.sqlserver_administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     BLUJOURNAL_JWT_SECRET          = "${random_string.dbServerPassword.result}"
+    AzureWebJobsDisableHomepage    = true
   }
 }
 

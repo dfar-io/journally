@@ -18,7 +18,7 @@ namespace HD.BluJournal
     [FunctionName("SwaggerUI")]
     [SwaggerIgnore]
     public static Task<HttpResponseMessage> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ui")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "/")]
             HttpRequestMessage req,
         ILogger log,
         [SwashBuckleClient] ISwashBuckleClient swashBuckleClient)
