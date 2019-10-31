@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title" id="modal-basic-title">Login</h4>
+  <h4 class="modal-title" id="modal-basic-title">Register</h4>
   <button
     type="button"
     class="close"
@@ -12,8 +12,8 @@
 
 <div class="modal-body">
   <form
-    id="loginForm"
-    [formGroup]="loginForm"
+    id="registerForm"
+    [formGroup]="registerForm"
     (ngSubmit)="submitForm()"
     novalidate
   >
@@ -43,19 +43,32 @@
         />
       </div>
     </div>
+    <div class="form-group">
+      <label for="password">Verify Password</label>
+      <div class="input-group">
+        <input
+          id="verifyPassword"
+          class="form-control"
+          name="verifyPassword"
+          type="password"
+          formControlName="verifyPassword"
+          required
+        />
+      </div>
+    </div>
   </form>
 </div>
 
 <div class="modal-footer">
-  <a href="#" (click)="clickRegister()">Register</a>
+  <a href="#" (click)="backToLogin()">Back to Login</a>
   <button
-    *ngIf="!isLoggingIn"
+    *ngIf="!isRegistering"
     type="submit"
-    form="loginForm"
+    form="registerForm"
     class="btn btn-primary btn-standard"
-    [disabled]="!loginForm.valid"
+    [disabled]="!registerForm.valid"
   >
-    Login
+    Register
   </button>
-  <span *ngIf="isLoggingIn">Logging in...</span>
+  <span *ngIf="isRegistering">Registering...</span>
 </div>

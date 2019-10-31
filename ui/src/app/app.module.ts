@@ -7,9 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from './login-modal/login-modal.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RegisterModalComponent } from './register-modal/register-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginModalComponent],
+  declarations: [AppComponent, LoginModalComponent, RegisterModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -20,6 +21,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],
-  entryComponents: [LoginModalComponent]
+  entryComponents: [LoginModalComponent, RegisterModalComponent]
 })
 export class AppModule {}
