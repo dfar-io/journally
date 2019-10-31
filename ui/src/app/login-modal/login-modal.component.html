@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Login</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form
+    id="loginForm"
+    [formGroup]="loginForm"
+    (ngSubmit)="submitForm()"
+    novalidate
+  >
+    <div class="form-group">
+      <label for="email">Email</label>
+      <div class="input-group">
+        <input
+          id="email"
+          class="form-control"
+          name="email"
+          formControlName="email"
+          required
+          ngbAutofocus
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="input-group">
+        <input
+          id="password"
+          class="form-control"
+          name="password"
+          type="password"
+          formControlName="password"
+          required
+        />
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button
+    *ngIf="!isLoggingIn"
+    type="submit"
+    form="loginForm"
+    class="btn btn-primary btn-standard"
+    [disabled]="!loginForm.valid"
+  >
+    Login
+  </button>
+  <span *ngIf="isLoggingIn">Logging in...</span>
+</div>

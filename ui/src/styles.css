@@ -7,3 +7,17 @@ body {
   color: #ffffff;
   font-family: 'Fira Code', monospace;
 }
+
+.modal-content {
+  background-color: #012345;
+  border: 1px solid white;
+}
+
+.modal-content span {
+  color: #fff;
+}
+
+.btn.btn-standard {
+  background-color: transparent;
+  border-color: #fff;
+}
