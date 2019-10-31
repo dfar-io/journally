@@ -1,7 +1,7 @@
 <div class="container">
   <nav class="navbar">
     <a class="navbar-brand">bluJournal</a>
-    <a href="#" class="my-2 my-lg-0" (click)="openModal()">Login</a>
+    <a href="#" class="my-2 my-lg-0" (click)="openLoginModal()">Login</a>
   </nav>
   <div class="row">
     <h1 class="col">{{ entry?.date }}</h1>
@@ -23,6 +23,11 @@
   <div class="row">
     <div class="col d-flex flex-row-reverse">
       <button type="submit" class="btn btn-primary btn-standard">Save</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-center">
+      <a href="#" (click)="openAboutModal()">About/Contact</a>
     </div>
   </div>
 </div>

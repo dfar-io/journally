@@ -8,9 +8,15 @@ import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from './login-modal/login-modal.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RegisterModalComponent } from './register-modal/register-modal.component';
+import { AboutModalComponent } from './about-modal/about-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginModalComponent, RegisterModalComponent],
+  declarations: [
+    AppComponent,
+    LoginModalComponent,
+    RegisterModalComponent,
+    AboutModalComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -21,6 +27,10 @@ import { RegisterModalComponent } from './register-modal/register-modal.componen
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],
-  entryComponents: [LoginModalComponent, RegisterModalComponent]
+  entryComponents: [
+    LoginModalComponent,
+    RegisterModalComponent,
+    AboutModalComponent
+  ]
 })
 export class AppModule {}

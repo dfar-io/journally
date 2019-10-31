@@ -3,6 +3,7 @@ import { Entry } from './entries/entry';
 import { EntryService } from './entries/entry.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from './login-modal/login-modal.component';
+import { AboutModalComponent } from './about-modal/about-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -33,8 +34,14 @@ export class AppComponent implements OnInit {
     this.entry.content = null;
   }
 
-  openModal() {
+  openLoginModal() {
     this.modalService.open(LoginModalComponent, {
+      centered: true
+    });
+  }
+
+  openAboutModal() {
+    this.modalService.open(AboutModalComponent, {
       centered: true
     });
   }
