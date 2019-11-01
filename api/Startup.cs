@@ -4,7 +4,6 @@ using HD.BluJournal.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 [assembly: FunctionsStartup(typeof(HD.BluJournal.Startup))]
 
@@ -23,6 +22,13 @@ namespace HD.BluJournal
 
       // dependency injection
       builder.Services.AddScoped<IUserService, UserService>();
+
+      // sets all JSON payload properties to lowercase
+      builder.Services.AddMvcCore()
+                      .AddJsonOptions(
+                        options => options.SerializerSettings.ContractResolver =
+                        new LowercaseContractResolver())
+                      .AddJsonFormatters();
     }
   }
 }

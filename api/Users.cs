@@ -7,7 +7,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using HD.BluJournal.DTOs;
 using HD.BluJournal.Helpers;
 using HD.BluJournal.Services;
 using HD.BluJournal.Models;
@@ -15,6 +14,9 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using HD.BluJournal.Http;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 
 namespace HD.BluJournal
 {
@@ -27,23 +29,34 @@ namespace HD.BluJournal
       _userService = userService;
     }
 
+    [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(AuthenticateUserResponse))]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
     [FunctionName("AuthenticateUser")]
     public async Task<IActionResult> Authenticate(
         [HttpTrigger(
             AuthorizationLevel.Anonymous,
             "post",
-            Route = "user/authenticate")] HttpRequest req,
+            Route = "user/authenticate")]
+        [RequestBodyType(typeof(AuthenticateUserRequest), "Authenticate User Request")]
+          HttpRequest req,
         ILogger log)
     {
       if (req.ContentLength <= 0)
         return HttpCodeHelper.EmptyPOSTBody();
 
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      UserDto data = JsonConvert.DeserializeObject<UserDto>(requestBody);
-      if (!data.IsValid)
-        return HttpCodeHelper.InvalidPayload();
+      RegisterUserRequest payload = null;
 
-      var user = _userService.Authenticate(data.Email, data.Password);
+      try
+      {
+        payload = JsonConvert.DeserializeObject<RegisterUserRequest>(requestBody);
+      }
+      catch (Exception e)
+      {
+        return HttpCodeHelper.Return400(e.Message);
+      }
+
+      var user = _userService.Authenticate(payload.Email, payload.Password);
 
       if (user == null)
         return HttpCodeHelper.Return400("Username or password is incorrect");
@@ -68,22 +81,25 @@ namespace HD.BluJournal
           new SymmetricSecurityKey(key),
           SecurityAlgorithms.HmacSha256Signature)
       };
+
       var token = tokenHandler.CreateToken(tokenDescriptor);
       var tokenString = tokenHandler.WriteToken(token);
 
-      return new OkObjectResult(new
-      {
-        Email = user.Email,
-        Token = tokenString
-      });
+      var response = new AuthenticateUserResponse();
+      response.Token = tokenString;
+
+      return new OkObjectResult(response);
     }
 
+    [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(RegisterUserResponse))]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
     [FunctionName("RegisterUser")]
     public async Task<IActionResult> Register(
         [HttpTrigger(
           AuthorizationLevel.Anonymous,
           "post",
           Route = "user")]
+        [RequestBodyType(typeof(RegisterUserRequest), "Register User Request")]
         HttpRequest req,
         ILogger log)
     {
@@ -91,28 +107,33 @@ namespace HD.BluJournal
         return HttpCodeHelper.EmptyPOSTBody();
 
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      UserDto data = JsonConvert.DeserializeObject<UserDto>(requestBody);
-
-      if (!data.IsValid)
-        return HttpCodeHelper.InvalidPayload();
-
-      var newUser = new User();
-      newUser.Email = data.Email;
+      RegisterUserRequest payload = null;
 
       try
       {
-        _userService.Create(newUser, data.Password);
+        payload = JsonConvert.DeserializeObject<RegisterUserRequest>(requestBody);
+      }
+      catch (Exception e)
+      {
+        return HttpCodeHelper.Return400(e.Message);
+      }
+
+      var newUser = new User();
+      newUser.Email = payload.Email;
+
+      try
+      {
+        _userService.Create(newUser, payload.Password);
       }
       catch (BluJournalException ex)
       {
         return HttpCodeHelper.Return400(ex.Message);
       }
 
-      return new CreatedResult("https://example.com/api/entries/201", new
-      {
-        id = newUser.Id,
-        email = newUser.Email
-      });
+      var response = new RegisterUserResponse();
+      response.Email = newUser.Email;
+
+      return new CreatedResult("https://example.com/api/entries/201", response);
     }
   }
 }
