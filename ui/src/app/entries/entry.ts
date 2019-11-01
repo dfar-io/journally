@@ -1,5 +1,5 @@
 export class Entry {
   id: string;
-  date: string;
+  datetime: Date;
   content: string;
 }

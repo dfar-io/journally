@@ -17,6 +17,7 @@ textarea {
 
 h1 {
   text-align: left;
+  font-size: 1.6rem;
 }
 
 textarea::-webkit-scrollbar-track {
@@ -45,6 +46,12 @@ textarea::-webkit-scrollbar-thumb {
 
 .navbar {
   padding: 0.5rem 0;
+}
+
+@media (min-width: 576px) {
+  h1 {
+    font-size: 2.5rem;
+  }
 }
 
 @media (min-width: 768px) {

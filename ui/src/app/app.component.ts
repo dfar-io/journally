@@ -24,13 +24,7 @@ export class AppComponent implements OnInit {
     // });
     const currentDate = new Date();
     this.entry = new Entry();
-    this.entry.date =
-      currentDate.getMonth() +
-      1 +
-      '-' +
-      currentDate.getDate() +
-      '-' +
-      currentDate.getFullYear();
+    this.entry.datetime = new Date();
     this.entry.content = null;
   }
 
