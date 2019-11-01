@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HD.BluJournal.Extensions;
 using HD.BluJournal.Models;
 using Microsoft.Extensions.Logging;
 
@@ -33,6 +34,9 @@ namespace HD.BluJournal.Services
 
     public User Create(User user, string password)
     {
+      if (!user.Email.IsValidEmail())
+        throw new BluJournalException("Invalid email provided.");
+
       if (string.IsNullOrWhiteSpace(password))
         throw new BluJournalException("Password required.");
 
@@ -57,11 +61,19 @@ namespace HD.BluJournal.Services
       out byte[] passwordHash,
       out byte[] passwordSalt)
     {
-      if (password == null) throw new ArgumentNullException("password");
+      if (password == null)
+        throw new ArgumentNullException("password");
+
       if (string.IsNullOrWhiteSpace(password))
       {
         throw new ArgumentException(
           "Value cannot be empty or whitespace only string.", "password");
+      }
+
+      if (password.Length < 8)
+      {
+        throw new ArgumentException(
+          "Value must be 8 or more characters.", "password");
       }
 
       using (var hmac = new System.Security.Cryptography.HMACSHA512())
