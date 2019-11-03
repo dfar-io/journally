@@ -3,13 +3,13 @@
 @import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);
 
 body {
-  background-color: #012345;
+  background-color: #2d1730;
   color: #ffffff;
   font-family: 'Fira Code', monospace;
 }
 
 .modal-content {
-  background-color: #012345;
+  background-color: #2d1730;
   border: 1px solid white;
 }
 
@@ -32,4 +32,12 @@ body {
 }
 .alert.alert-success {
   background-color: #006600;
+}
+
+a {
+  color: #e48aff;
+}
+
+a:hover {
+  color: #f3ccff;
 }
