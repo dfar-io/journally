@@ -53,8 +53,13 @@ export class RegisterModalComponent implements OnInit {
   // circular dependency introduced, need to remove this
   // check out
   // https://github.com/angular/components/issues/3593#issuecomment-286397115
-  backToLogin(alert: Alert) {
+  backToLogin(alert: Alert = null) {
     this.activeModal.close();
+
+    if (alert == null) {
+      return;
+    }
+
     const modalRef = this.modalService.open(LoginModalComponent, {
       centered: true
     });
