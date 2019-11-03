@@ -44,8 +44,10 @@ namespace HD.BluJournal.Services
         throw new BluJournalException(
           "Email \"" + user.Email + "\" is already taken.");
 
-      byte[] passwordHash, passwordSalt;
-      CreatePasswordHash(password, out passwordHash, out passwordSalt);
+      CreatePasswordHash(
+        password,
+        out byte[] passwordHash,
+        out byte[] passwordSalt);
 
       user.PasswordHash = passwordHash;
       user.PasswordSalt = passwordSalt;
@@ -82,6 +84,7 @@ namespace HD.BluJournal.Services
         passwordHash =
           hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
       }
+
     }
 
     private bool VerifyPasswordHash(

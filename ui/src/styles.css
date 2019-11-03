@@ -21,3 +21,15 @@ body {
   background-color: transparent;
   border-color: #fff;
 }
+
+.alert {
+  color: white;
+  border-color: white;
+}
+
+.alert.alert-danger {
+  background-color: #ff3333;
+}
+.alert.alert-success {
+  background-color: #006600;
+}

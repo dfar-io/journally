@@ -11,10 +11,17 @@
 </div>
 
 <div class="modal-body">
+  <ngb-alert
+    *ngIf="!isNullOrWhitespace(modalAlert?.message)"
+    [type]="modalAlert.type"
+    (close)="closeAlert()"
+  >
+    {{ modalAlert.message }}
+  </ngb-alert>
   <form
     id="loginForm"
     [formGroup]="loginForm"
-    (ngSubmit)="submitForm()"
+    (ngSubmit)="authenticateUser()"
     novalidate
   >
     <div class="form-group">

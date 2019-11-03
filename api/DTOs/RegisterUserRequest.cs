@@ -1,11 +1,12 @@
 using Newtonsoft.Json;
 
-namespace HD.BluJournal.Http
+namespace HD.BluJournal.DTOs
 {
-  public class AuthenticateUserRequest
+  public class RegisterUserRequest
   {
     [JsonRequired]
     public string Email { get; set; }
+
     [JsonRequired]
     public string Password { get; set; }
   }

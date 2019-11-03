@@ -24,13 +24,17 @@ namespace HD.BluJournal
     [FunctionName("PostEntry")]
     public async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "entries")]
-            HttpRequest req,
-        ILogger log)
+            HttpRequest req)
     {
       if (req.ContentLength <= 0)
         return HttpCodeHelper.EmptyPOSTBody();
 
-      string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+      string requestBody;
+      using (StreamReader readStream = new StreamReader(req.Body))
+      {
+        requestBody = await readStream.ReadToEndAsync();
+      }
+
       Entry data = JsonConvert.DeserializeObject<Entry>(requestBody);
       if (!data.IsValid)
       {
@@ -54,8 +58,8 @@ namespace HD.BluJournal
 
       return new CreatedResult("https://example.com/api/entries/201", new
       {
-        id = id,
-        date = date,
+        id,
+        date,
         content = data.Content
       });
     }

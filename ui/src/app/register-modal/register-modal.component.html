@@ -11,6 +11,13 @@
 </div>
 
 <div class="modal-body">
+  <ngb-alert
+    *ngIf="!isNullOrWhitespace(modalMessage)"
+    type="danger"
+    (close)="closeAlert()"
+  >
+    {{ modalMessage }}
+  </ngb-alert>
   <form
     id="registerForm"
     [formGroup]="registerForm"
@@ -66,7 +73,10 @@
     type="submit"
     form="registerForm"
     class="btn btn-primary btn-standard"
-    [disabled]="!registerForm.valid"
+    [disabled]="
+      !registerForm.valid ||
+      registerForm.value.verifyPassword != registerForm.value.password
+    "
   >
     Register
   </button>

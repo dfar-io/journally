@@ -20,7 +20,6 @@ namespace HD.BluJournal
     public static Task<HttpResponseMessage> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "json")]
         HttpRequestMessage req,
-        ILogger log,
         [SwashBuckleClient] ISwashBuckleClient swashBuckleClient)
     {
       return Task.FromResult(swashBuckleClient.CreateSwaggerDocumentResponse(req));

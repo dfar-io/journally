@@ -15,8 +15,8 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
-using HD.BluJournal.Http;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using HD.BluJournal.DTOs;
 
 namespace HD.BluJournal
 {
@@ -44,8 +44,13 @@ namespace HD.BluJournal
       if (req.ContentLength <= 0)
         return HttpCodeHelper.EmptyPOSTBody();
 
-      string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      RegisterUserRequest payload = null;
+      string requestBody;
+      using (StreamReader readStream = new StreamReader(req.Body))
+      {
+        requestBody = await readStream.ReadToEndAsync();
+      }
+
+      RegisterUserRequest payload;
 
       try
       {
@@ -85,8 +90,11 @@ namespace HD.BluJournal
       var token = tokenHandler.CreateToken(tokenDescriptor);
       var tokenString = tokenHandler.WriteToken(token);
 
-      var response = new AuthenticateUserResponse();
-      response.Token = tokenString;
+      var response = new AuthenticateUserResponse
+      {
+        Email = user.Email,
+        Token = tokenString
+      };
 
       return new OkObjectResult(response);
     }
@@ -100,14 +108,18 @@ namespace HD.BluJournal
           "post",
           Route = "user")]
         [RequestBodyType(typeof(RegisterUserRequest), "Register User Request")]
-        HttpRequest req,
-        ILogger log)
+        HttpRequest req)
     {
       if (req.ContentLength <= 0)
         return HttpCodeHelper.EmptyPOSTBody();
 
-      string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      RegisterUserRequest payload = null;
+      string requestBody;
+      using (StreamReader readStream = new StreamReader(req.Body))
+      {
+        requestBody = await readStream.ReadToEndAsync();
+      }
+
+      RegisterUserRequest payload;
 
       try
       {
@@ -118,8 +130,10 @@ namespace HD.BluJournal
         return HttpCodeHelper.Return400(e.Message);
       }
 
-      var newUser = new User();
-      newUser.Email = payload.Email;
+      var newUser = new User
+      {
+        Email = payload.Email
+      };
 
       try
       {
@@ -130,8 +144,10 @@ namespace HD.BluJournal
         return HttpCodeHelper.Return400(ex.Message);
       }
 
-      var response = new RegisterUserResponse();
-      response.Email = newUser.Email;
+      var response = new RegisterUserResponse
+      {
+        Email = newUser.Email
+      };
 
       return new CreatedResult("https://example.com/api/entries/201", response);
     }

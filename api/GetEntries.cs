@@ -20,9 +20,13 @@ namespace HD.BluJournal
     [FunctionName("GetEntries")]
     public IActionResult Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "entries")]
-        HttpRequest req,
-        ILogger log)
+        HttpRequest req)
     {
+      if (req is null)
+      {
+        throw new System.ArgumentNullException(nameof(req));
+      }
+
       var entries = _context.Entries.ToArray();
       return new OkObjectResult(entries);
     }

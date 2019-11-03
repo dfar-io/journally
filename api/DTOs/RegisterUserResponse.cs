@@ -1,4 +1,4 @@
-namespace HD.BluJournal.Http
+namespace HD.BluJournal.DTOs
 {
   public class RegisterUserResponse
   {

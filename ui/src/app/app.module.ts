@@ -4,7 +4,11 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModalModule,
+  NgbActiveModal,
+  NgbAlertModule
+} from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from './login-modal/login-modal.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RegisterModalComponent } from './register-modal/register-modal.component';
@@ -22,6 +26,7 @@ import { AboutModalComponent } from './about-modal/about-modal.component';
     AppRoutingModule,
     HttpClientModule,
     NgbModalModule,
+    NgbAlertModule,
     ReactiveFormsModule,
     FormsModule
   ],
