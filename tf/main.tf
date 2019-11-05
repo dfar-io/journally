@@ -117,6 +117,15 @@ resource "azurerm_sql_firewall_rule" "test" {
   end_ip_address      = "40.114.122.130"
 }
 
+resource "azurerm_sql_firewall_rule" "fa" {
+  count               = "8"
+  name                = "FunctionApp${count.index}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  server_name         = "${module.sql-server.sqlserver_name}"
+  start_ip_address    = "${element(split(",", module.function-app.possible_outbound_ip_addresses), count.index)}"
+  end_ip_address      = "${element(split(",", module.function-app.possible_outbound_ip_addresses), count.index)}"
+}
+
 resource "azurerm_cdn_profile" "cdn" {
   name                = "${var.prefix}-${var.env}-cdn"
   location            = "${azurerm_resource_group.rg.location}"
