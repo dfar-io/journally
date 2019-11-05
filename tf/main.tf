@@ -36,7 +36,7 @@ module "app-insights" {
 
 module "function-app" {
   source                                    = "dfar-io/function-app/azurerm"
-  version                                   = "1.5.0"
+  version                                   = "1.7.0"
   function_app_name                         = "journally"
   function_app_plan_name                    = "${var.prefix}-${var.env}-asp"
   rg_location                               = "${azurerm_resource_group.rg.location}"
@@ -44,22 +44,54 @@ module "function-app" {
   storage_account_name                      = "${lower(substr(var.prefix, 0, 15))}${lower(var.env)}fa"
   storage_account_kind                      = "StorageV2"
   storage_account_enable_https_traffic_only = "true"
+  https_only                                = true
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${module.app-insights.instrumentation_key}"
-    JOURNALLY_CONN_STR             = "Server=tcp:${module.sql-server.sqlserver_name}.database.windows.net:1433;Initial Catalog=journally;Persist Security Info=False;User ID=${module.sql-server.sqlserver_administrator_login};Password=${module.sql-server.sqlserver_administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    JOURNALLY_CONN_STR             = "Server=tcp:${module.sql-server.sqlserver_name}.database.windows.net,1433;Initial Catalog=journally;Persist Security Info=False;User ID=${module.sql-server.sqlserver_administrator_login};Password=${module.sql-server.sqlserver_administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     JOURNALLY_JWT_SECRET           = "${random_string.dbServerPassword.result}"
   }
 }
 
 module "key-vault" {
-  source            = "dfar-io/key-vault/azurerm"
-  version           = "1.0.0"
-  keyvault_admin_id = "8443b328-b32b-4626-b306-29762939ff37"
-  name              = "${var.prefix}-${var.env}-kv"
-  rg_location       = "${azurerm_resource_group.rg.location}"
-  rg_name           = "${azurerm_resource_group.rg.name}"
-  tenant_id         = "f3cd45d5-927c-47e7-838a-f48b95dc4fd7"
+  source      = "dfar-io/key-vault/azurerm"
+  version     = "2.1.0"
+  name        = "${var.prefix}-${var.env}-kv"
+  rg_name     = "${azurerm_resource_group.rg.name}"
+  rg_location = "${azurerm_resource_group.rg.location}"
+  tenant_id   = "f3cd45d5-927c-47e7-838a-f48b95dc4fd7"
+
+  access_policy = [
+    {
+      tenant_id = "f3cd45d5-927c-47e7-838a-f48b95dc4fd7"
+      object_id = "8443b328-b32b-4626-b306-29762939ff37"
+
+      key_permissions = [
+        "create",
+        "get",
+        "list",
+        "wrapKey",
+        "sign",
+        "verify",
+        "restore",
+        "unwrapKey"
+      ]
+
+      secret_permissions = [
+        "get",
+        "set",
+        "list",
+        "backup",
+        "restore",
+        "delete"
+      ]
+
+      certificate_permissions = [
+        "list",
+        "import"
+      ]
+    }
+  ]
 }
 
 module "sql-server" {
@@ -69,6 +101,12 @@ module "sql-server" {
   location  = "${azurerm_resource_group.rg.location}"
   rg_name   = "${azurerm_resource_group.rg.name}"
   databases = ["journally"]
+}
+
+resource "azurerm_app_service_custom_hostname_binding" "hostname" {
+  hostname            = "api.${var.prefix}.io"
+  app_service_name    = "journally"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
 }
 
 resource "azurerm_sql_firewall_rule" "test" {
@@ -109,3 +147,14 @@ output "StorageAccountKey" {
   value = "2. Add storage account to Jenkins:\nStorage Account Name: ${lower(substr(var.prefix, 0, 15))}${lower(var.env)}fa\nStorage Account Key: ${module.function-app.storage_account_primary_access_key}\nID: journally"
 }
 
+output "ConnectionStringJenkins" {
+  value = "3. Add connection string to Jenkins"
+}
+
+output "CNAMERecords" {
+  value = "4. Create CNAME Records: \n@ - ${azurerm_cdn_endpoint.endpoint.name}.azureedge.net\napi - ${var.prefix}.azurewebsites.net"
+}
+
+output "CreateLetsEncryptCerts" {
+  value = "5. Create 2 Let's Encrypt Certs, convert to PFX, add to Function App and Key Vault"
+}
