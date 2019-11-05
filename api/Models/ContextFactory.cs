@@ -9,7 +9,8 @@ namespace HD.Journally.Models
     public Context CreateDbContext(string[] args)
     {
       var optionsBuilder = new DbContextOptionsBuilder<Context>();
-      optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("Journally_CONN_STR"));
+      optionsBuilder.UseSqlServer(
+        Environment.GetEnvironmentVariable(Constants.ConnectionStringKey));
 
       return new Context(optionsBuilder.Options);
     }

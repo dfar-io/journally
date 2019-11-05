@@ -14,7 +14,7 @@ namespace HD.Journally
     public override void Configure(IFunctionsHostBuilder builder)
     {
       string SqlConnection =
-        Environment.GetEnvironmentVariable("Journally_CONN_STR");
+        Environment.GetEnvironmentVariable(Constants.ConnectionStringKey);
 
       builder.Services.AddDbContext<Context>(
         options => options.UseSqlServer(SqlConnection)
