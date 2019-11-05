@@ -13,7 +13,7 @@ pipeline {
     stage('Build UI') {
       steps {
         dir("ui") {
-          sh 'npm i'
+          sh 'npm ci'
           sh 'npm run build -- --prod'
         }
       }
@@ -68,8 +68,8 @@ pipeline {
     failure {
       slackSend color: 'danger', message: "Journally deployment failed (<${env.BUILD_URL}|Open>)"
     }
-    always {
+    /*always {
       cleanWs()
-    }
+    }*/
   }
 }
