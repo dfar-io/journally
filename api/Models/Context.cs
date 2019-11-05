@@ -1,7 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace HD.BluJournal.Models
+namespace HD.Journally.Models
 {
   public class Context : DbContext
   {

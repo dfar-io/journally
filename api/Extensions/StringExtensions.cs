@@ -1,7 +1,7 @@
 using System;
 using System.Net.Mail;
 
-namespace HD.BluJournal.Extensions
+namespace HD.Journally.Extensions
 {
   public static class StringExtensions
   {

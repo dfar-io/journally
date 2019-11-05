@@ -11,7 +11,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using System.Net.Http;
 using AzureFunctions.Extensions.Swashbuckle;
 
-namespace HD.BluJournal
+namespace HD.Journally
 {
   public static class SwaggerUI
   {

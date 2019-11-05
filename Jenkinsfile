@@ -18,7 +18,7 @@ pipeline {
         }
       }
     }
-    // make sure `BLUJOURNAL_CONN_STR` env. variable is set.
+    // make sure `JOURNALLY_CONN_STR` env. variable is set.
     stage('Deploy DB Migrations') {
       steps {
         dir("api") {
@@ -30,9 +30,9 @@ pipeline {
       when { branch 'master' }
       steps {
         dir("api") {
-          azureFunctionAppPublish appName: "blujournal",
+          azureFunctionAppPublish appName: "journally",
           azureCredentialsId: 'jenkins-sp',
-          resourceGroup: "bluJournal-prod-rg",
+          resourceGroup: "journally-prod-rg",
           sourceDirectory: 'bin/Release/netcoreapp2.1',
           targetDirectory: '',
           filePath: ''
@@ -52,7 +52,7 @@ pipeline {
             containerName: '$web',
             fileShareName: '',
             filesPath: '**/*',
-            storageCredentialId: 'bluJournal',
+            storageCredentialId: 'journally',
             storageType: 'blobstorage'
         }
       }
@@ -60,13 +60,13 @@ pipeline {
     stage('Purge CDN') {
       when { branch 'master' }
       steps {
-        sh 'az cdn endpoint purge -g blujournal-prod-rg  --profile-name blujournal-prod-cdn --name blujournal-prod-cdnEndpoint --content-paths /'
+        sh 'az cdn endpoint purge -g journally-prod-rg  --profile-name journally-prod-cdn --name journally-prod-cdnEndpoint --content-paths /'
       }
     }
   }
   post {
     failure {
-      slackSend color: 'danger', message: "bluJournal deployment failed (<${env.BUILD_URL}|Open>)"
+      slackSend color: 'danger', message: "Journally deployment failed (<${env.BUILD_URL}|Open>)"
     }
     always {
       cleanWs()

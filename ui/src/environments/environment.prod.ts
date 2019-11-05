@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.blujournal.com/'
+  apiUrl: 'https://api.Journally.com/'
 };

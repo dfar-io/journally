@@ -7,11 +7,11 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using HD.BluJournal.Models;
+using HD.Journally.Models;
 using System.Linq;
-using HD.BluJournal.Helpers;
+using HD.Journally.Helpers;
 
-namespace HD.BluJournal
+namespace HD.Journally
 {
   public class PostEntry
   {

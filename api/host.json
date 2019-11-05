@@ -7,9 +7,9 @@
     "Swashbuckle": {
       "Documents": [
         {
-          "Title": "BluJournal API",
+          "Title": "Journally API",
           "Version": "v1",
-          "Description": "Provides access to BluJournal resources."
+          "Description": "Provides access to Journally resources."
         }
       ]
     }

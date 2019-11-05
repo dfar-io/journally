@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HD.BluJournal.Extensions;
-using HD.BluJournal.Models;
+using HD.Journally.Extensions;
+using HD.Journally.Models;
 using Microsoft.Extensions.Logging;
 
-namespace HD.BluJournal.Services
+namespace HD.Journally.Services
 {
   public class UserService : IUserService
   {
@@ -35,13 +35,13 @@ namespace HD.BluJournal.Services
     public User Create(User user, string password)
     {
       if (!user.Email.IsValidEmail())
-        throw new BluJournalException("Invalid email provided.");
+        throw new JournallyException("Invalid email provided.");
 
       if (string.IsNullOrWhiteSpace(password))
-        throw new BluJournalException("Password required.");
+        throw new JournallyException("Password required.");
 
       if (_context.Users.Any(x => x.Email == user.Email))
-        throw new BluJournalException(
+        throw new JournallyException(
           "Email \"" + user.Email + "\" is already taken.");
 
       CreatePasswordHash(

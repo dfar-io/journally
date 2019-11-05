@@ -7,18 +7,18 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using HD.BluJournal.Helpers;
-using HD.BluJournal.Services;
-using HD.BluJournal.Models;
+using HD.Journally.Helpers;
+using HD.Journally.Services;
+using HD.Journally.Models;
 using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using HD.BluJournal.DTOs;
+using HD.Journally.DTOs;
 
-namespace HD.BluJournal
+namespace HD.Journally
 {
   public class Users
   {
@@ -67,11 +67,11 @@ namespace HD.BluJournal
         return HttpCodeHelper.Return400("Username or password is incorrect");
 
       var tokenHandler = new JwtSecurityTokenHandler();
-      var secret = Environment.GetEnvironmentVariable("BLUJOURNAL_JWT_SECRET");
+      var secret = Environment.GetEnvironmentVariable("Journally_JWT_SECRET");
       if (secret == null)
       {
         log.LogError(
-          "BLUJOURNAL_JWT_SECRET environment variable not configured.");
+          "Journally_JWT_SECRET environment variable not configured.");
         HttpCodeHelper.Return500();
       }
       var key = Encoding.ASCII.GetBytes(secret);
@@ -139,7 +139,7 @@ namespace HD.BluJournal
       {
         _userService.Create(newUser, payload.Password);
       }
-      catch (BluJournalException ex)
+      catch (JournallyException ex)
       {
         return HttpCodeHelper.Return400(ex.Message);
       }

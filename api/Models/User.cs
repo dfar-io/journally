@@ -1,4 +1,4 @@
-namespace HD.BluJournal.Models
+namespace HD.Journally.Models
 {
   public class User
   {

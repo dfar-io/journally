@@ -52,6 +52,14 @@ func host start
 
 ### Building the UI
 
+Requirements:
+
+- Node/NPM
+- Angular CLI
+
+1. Run `npm i`
+1. Run the UI using `ng serve -o`
+
 ## License
 
 [GNU](https://www.gnu.org/licenses/gpl-3.0.en.html)

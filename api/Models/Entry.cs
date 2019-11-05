@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace HD.BluJournal.Models
+namespace HD.Journally.Models
 {
   public class Entry
   {

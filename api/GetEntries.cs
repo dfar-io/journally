@@ -3,11 +3,11 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using HD.BluJournal.Models;
+using HD.Journally.Models;
 using System.Linq;
 using System.Net;
 
-namespace HD.BluJournal
+namespace HD.Journally
 {
   public class GetEntries
   {

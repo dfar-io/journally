@@ -8,7 +8,7 @@ provider "azurerm" {
 }
 
 variable "prefix" {
-  default = "blujournal"
+  default = "journally"
 }
 
 variable "env" {}
@@ -30,14 +30,14 @@ module "app-insights" {
   name     = "${var.prefix}-${var.env}-ai"
   rg_name  = "${azurerm_resource_group.rg.name}"
   web_tests = {
-    "${var.prefix}-${var.env}-uptime" = "https://blujournal.com"
+    "${var.prefix}-${var.env}-uptime" = "https://journally.io"
   }
 }
 
 module "function-app" {
   source                                    = "dfar-io/function-app/azurerm"
   version                                   = "1.5.0"
-  function_app_name                         = "blujournal"
+  function_app_name                         = "journally"
   function_app_plan_name                    = "${var.prefix}-${var.env}-asp"
   rg_location                               = "${azurerm_resource_group.rg.location}"
   rg_name                                   = "${azurerm_resource_group.rg.name}"
@@ -47,8 +47,8 @@ module "function-app" {
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${module.app-insights.instrumentation_key}"
-    BLUJOURNAL_CONN_STR            = "Server=tcp:${module.sql-server.sqlserver_name}.database.windows.net:1433;Initial Catalog=blujournal;Persist Security Info=False;User ID=${module.sql-server.sqlserver_administrator_login};Password=${module.sql-server.sqlserver_administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-    BLUJOURNAL_JWT_SECRET          = "${random_string.dbServerPassword.result}"
+    JOURNALLY_CONN_STR             = "Server=tcp:${module.sql-server.sqlserver_name}.database.windows.net:1433;Initial Catalog=Journally;Persist Security Info=False;User ID=${module.sql-server.sqlserver_administrator_login};Password=${module.sql-server.sqlserver_administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    JOURNALLY_JWT_SECRET           = "${random_string.dbServerPassword.result}"
   }
 }
 
@@ -68,7 +68,7 @@ module "sql-server" {
   name      = "${var.prefix}-${var.env}-sql"
   location  = "${azurerm_resource_group.rg.location}"
   rg_name   = "${azurerm_resource_group.rg.name}"
-  databases = ["blujournal"]
+  databases = ["journally"]
 }
 
 resource "azurerm_cdn_profile" "cdn" {
@@ -84,19 +84,20 @@ resource "azurerm_cdn_endpoint" "endpoint" {
   location                      = "${azurerm_resource_group.rg.location}"
   resource_group_name           = "${azurerm_resource_group.rg.name}"
   querystring_caching_behaviour = "NotSet"
-  origin_host_header            = "blujournalprodfa.z13.web.core.windows.net"
+  origin_host_header            = "journallyprodfa.z13.web.core.windows.net"
 
   origin {
-    name      = "blujournal"
-    host_name = "blujournalprodfa.z13.web.core.windows.net"
+    name      = "journally"
+    host_name = "journallyprodfa.z13.web.core.windows.net"
 
   }
 }
 
 output "StorageAccount" {
-  value = "Turn on static website in storage account."
+  value = "1. Turn on static website in storage account."
 }
 
 output "StorageAccountKey" {
-  value = "Add storage account key to Jenkins - ${module.function-app.storage_account_primary_access_key}"
+  value = "2. Add storage account to Jenkins:\nStorage Account Name: ${lower(substr(var.prefix, 0, 15))}${lower(var.env)}fa\nStorage Account Key: ${module.function-app.storage_account_primary_access_key}\nID: journally"
 }
+

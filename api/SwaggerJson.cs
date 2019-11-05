@@ -11,7 +11,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using AzureFunctions.Extensions.Swashbuckle;
 using System.Net.Http;
 
-namespace HD.BluJournal
+namespace HD.Journally
 {
   public static class SwaggerJson
   {

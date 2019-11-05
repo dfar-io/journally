@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using HD.BluJournal.Models;
+using HD.Journally.Models;
 
-namespace HD.BluJournal.Services
+namespace HD.Journally.Services
 {
   public interface IUserService
   {
