@@ -68,8 +68,8 @@ pipeline {
     failure {
       slackSend color: 'danger', message: "Journally deployment failed (<${env.BUILD_URL}|Open>)"
     }
-    /*always {
+    always {
       cleanWs()
-    }*/
+    }
   }
 }
