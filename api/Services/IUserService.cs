@@ -7,5 +7,6 @@ namespace HD.Journally.Services
   {
     User Authenticate(string email, string password);
     User Create(User user, string password);
+    User GetByEmail(string email);
   }
 }

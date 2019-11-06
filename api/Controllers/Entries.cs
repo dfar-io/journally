@@ -1,28 +1,42 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using HD.Journally.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 using HD.Journally.Helpers;
+using System.IO;
+using Newtonsoft.Json;
 
-namespace HD.Journally
+namespace HD.Journally.Controllers
 {
-  public class PostEntry
+  public class Entries
   {
     private readonly Context _context;
-    public PostEntry(Context context)
+    public Entries(Context context)
     {
       _context = context;
     }
 
+
+    [FunctionName("GetEntries")]
+    public IActionResult Get(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "entries")]
+        HttpRequest req)
+    {
+      if (req is null)
+      {
+        throw new System.ArgumentNullException(nameof(req));
+      }
+
+      var entries = _context.Entries.ToArray();
+      return new OkObjectResult(entries);
+    }
+
     [FunctionName("PostEntry")]
-    public async Task<IActionResult> Run(
+    public async Task<IActionResult> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "entries")]
             HttpRequest req)
     {

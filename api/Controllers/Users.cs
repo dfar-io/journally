@@ -18,7 +18,7 @@ using System.Net;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using HD.Journally.DTOs;
 
-namespace HD.Journally
+namespace HD.Journally.Controllers
 {
   public class Users
   {
@@ -79,7 +79,7 @@ namespace HD.Journally
       {
         Subject = new ClaimsIdentity(new Claim[]
           {
-            new Claim(ClaimTypes.Name, user.Id.ToString())
+            new Claim(ClaimTypes.Email, user.Email)
           }),
         Expires = DateTime.UtcNow.AddDays(7),
         SigningCredentials = new SigningCredentials(

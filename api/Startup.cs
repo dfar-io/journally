@@ -1,9 +1,13 @@
 using System;
+using System.Text;
+using System.Threading.Tasks;
 using HD.Journally.Models;
 using HD.Journally.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 [assembly: FunctionsStartup(typeof(HD.Journally.Startup))]
 
