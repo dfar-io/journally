@@ -23,15 +23,17 @@ namespace HD.Journally.Controllers
   public class Users
   {
     private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
 
-    public Users(IUserService userService)
+    public Users(IUserService userService, ITokenService tokenService)
     {
       _userService = userService;
+      _tokenService = tokenService;
     }
 
+    [FunctionName("AuthenticateUser")]
     [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(AuthenticateUserResponse))]
     [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
-    [FunctionName("AuthenticateUser")]
     public async Task<IActionResult> Authenticate(
         [HttpTrigger(
             AuthorizationLevel.Anonymous,
@@ -66,29 +68,7 @@ namespace HD.Journally.Controllers
       if (user == null)
         return HttpCodeHelper.Return400("Username or password is incorrect");
 
-      var tokenHandler = new JwtSecurityTokenHandler();
-      var secret = Environment.GetEnvironmentVariable("Journally_JWT_SECRET");
-      if (secret == null)
-      {
-        log.LogError(
-          "Journally_JWT_SECRET environment variable not configured.");
-        HttpCodeHelper.Return500();
-      }
-      var key = Encoding.ASCII.GetBytes(secret);
-      var tokenDescriptor = new SecurityTokenDescriptor
-      {
-        Subject = new ClaimsIdentity(new Claim[]
-          {
-            new Claim(ClaimTypes.Email, user.Email)
-          }),
-        Expires = DateTime.UtcNow.AddDays(7),
-        SigningCredentials = new SigningCredentials(
-          new SymmetricSecurityKey(key),
-          SecurityAlgorithms.HmacSha256Signature)
-      };
-
-      var token = tokenHandler.CreateToken(tokenDescriptor);
-      var tokenString = tokenHandler.WriteToken(token);
+      var tokenString = _tokenService.GenerateToken(user);
 
       var response = new AuthenticateUserResponse
       {
@@ -99,9 +79,9 @@ namespace HD.Journally.Controllers
       return new OkObjectResult(response);
     }
 
+    [FunctionName("RegisterUser")]
     [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(RegisterUserResponse))]
     [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
-    [FunctionName("RegisterUser")]
     public async Task<IActionResult> Register(
         [HttpTrigger(
           AuthorizationLevel.Anonymous,

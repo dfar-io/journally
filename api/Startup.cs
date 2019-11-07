@@ -1,13 +1,10 @@
 using System;
-using System.Text;
-using System.Threading.Tasks;
 using HD.Journally.Models;
 using HD.Journally.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+
 
 [assembly: FunctionsStartup(typeof(HD.Journally.Startup))]
 
@@ -26,6 +23,7 @@ namespace HD.Journally
 
       // dependency injection
       builder.Services.AddScoped<IUserService, UserService>();
+      builder.Services.AddScoped<ITokenService, TokenService>();
 
       // sets all JSON payload properties to lowercase
       builder.Services.AddMvcCore()

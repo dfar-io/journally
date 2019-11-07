@@ -4,31 +4,40 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using HD.Journally.Models;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using HD.Journally.Helpers;
 using System.IO;
 using Newtonsoft.Json;
+using HD.Journally.Services;
+using Microsoft.Extensions.Logging;
 
 namespace HD.Journally.Controllers
 {
   public class Entries
   {
     private readonly Context _context;
-    public Entries(Context context)
+    private readonly ITokenService _tokenService;
+    public Entries(Context context, ITokenService tokenService)
     {
       _context = context;
+      _tokenService = tokenService;
     }
-
 
     [FunctionName("GetEntries")]
     public IActionResult Get(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "entries")]
-        HttpRequest req)
+        HttpRequest req,
+        ILogger log)
     {
-      if (req is null)
+      string authenticatedEmail;
+      try
       {
-        throw new System.ArgumentNullException(nameof(req));
+        authenticatedEmail = _tokenService.GetEmailFromBearerToken(req);
+      }
+      catch (JournallyException ex)
+      {
+        log.LogWarning($"Authorization error when calling /entries: {ex.Message}");
+        return new UnauthorizedResult();
       }
 
       var entries = _context.Entries.ToArray();
@@ -38,8 +47,20 @@ namespace HD.Journally.Controllers
     [FunctionName("PostEntry")]
     public async Task<IActionResult> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "entries")]
-            HttpRequest req)
+        HttpRequest req,
+        ILogger log)
     {
+      string authenticatedEmail;
+      try
+      {
+        authenticatedEmail = _tokenService.GetEmailFromBearerToken(req);
+      }
+      catch (JournallyException ex)
+      {
+        log.LogWarning($"Authorization error when calling /entries: {ex.Message}");
+        return new UnauthorizedResult();
+      }
+
       if (req.ContentLength <= 0)
         return HttpCodeHelper.EmptyPOSTBody();
 
