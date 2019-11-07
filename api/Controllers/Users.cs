@@ -63,10 +63,15 @@ namespace HD.Journally.Controllers
         return HttpCodeHelper.Return400(e.Message);
       }
 
-      var user = _userService.Authenticate(payload.Email, payload.Password);
-
-      if (user == null)
-        return HttpCodeHelper.Return400("Username or password is incorrect");
+      User user;
+      try
+      {
+        user = _userService.Authenticate(payload.Email, payload.Password);
+      }
+      catch (JournallyException ex)
+      {
+        return HttpCodeHelper.Return400(ex.Message);
+      }
 
       var tokenString = _tokenService.GenerateToken(user);
 

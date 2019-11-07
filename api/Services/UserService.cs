@@ -19,15 +19,15 @@ namespace HD.Journally.Services
     public User Authenticate(string email, string password)
     {
       if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-        return null;
+        throw new JournallyException("Email or password not provided.");
 
       var user = _context.Users.SingleOrDefault(x => x.Email == email);
 
       if (user == null)
-        return null;
+        throw new JournallyException($"User '{email}' not found.");
 
       if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-        return null;
+        throw new JournallyException("Incorrect password provided.");
 
       return user;
     }
