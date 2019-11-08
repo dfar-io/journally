@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "azurerm" {
-  version         = "=1.29"
+  version         = "=1.36"
   subscription_id = "a3fa6f62-77b0-4b51-8017-5f1496d0a7ff"
 }
 
@@ -36,7 +36,7 @@ module "app-insights" {
 
 module "function-app" {
   source                                    = "dfar-io/function-app/azurerm"
-  version                                   = "1.7.0"
+  version                                   = "2.0.0"
   function_app_name                         = "journally"
   function_app_plan_name                    = "${var.prefix}-${var.env}-asp"
   rg_location                               = "${azurerm_resource_group.rg.location}"
@@ -45,6 +45,7 @@ module "function-app" {
   storage_account_kind                      = "StorageV2"
   storage_account_enable_https_traffic_only = "true"
   https_only                                = true
+  cors_allowed_origins                      = ["journally.io"]
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${module.app-insights.instrumentation_key}"
@@ -64,7 +65,7 @@ module "key-vault" {
   access_policy = [
     {
       tenant_id = "f3cd45d5-927c-47e7-838a-f48b95dc4fd7"
-      object_id = "8443b328-b32b-4626-b306-29762939ff37"
+      object_id = "8443b328-b32b-4626-b306-29762939ff37" // Key Vault Admin
 
       key_permissions = [
         "create",
@@ -90,6 +91,16 @@ module "key-vault" {
         "list",
         "import"
       ]
+    },
+    {
+      tenant_id = "f3cd45d5-927c-47e7-838a-f48b95dc4fd7"
+      object_id = "db0ad62f-a9b6-4db9-a2e9-4065d70f7d7b" //Azure CDN
+
+      secret_permissions = [
+        "Get",
+      ]
+      certificate_permissions = []
+      key_permissions         = []
     }
   ]
 }
@@ -107,6 +118,8 @@ resource "azurerm_app_service_custom_hostname_binding" "hostname" {
   hostname            = "api.${var.prefix}.io"
   app_service_name    = "journally"
   resource_group_name = "${azurerm_resource_group.rg.name}"
+  ssl_state           = "SniEnabled"
+  thumbprint          = "3ADF1F093038AA6B441D5D77803304E53185614D"
 }
 
 resource "azurerm_sql_firewall_rule" "test" {
@@ -144,7 +157,6 @@ resource "azurerm_cdn_endpoint" "endpoint" {
   origin {
     name      = "journally"
     host_name = "journallyprodfa.z13.web.core.windows.net"
-
   }
 }
 
