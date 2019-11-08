@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace HD.Journally.Models
@@ -20,12 +21,11 @@ namespace HD.Journally.Models
     public string Content { get; set; }
 
     [JsonIgnore]
-    public bool IsValid
-    {
-      get
-      {
-        return Date != DateTime.MinValue && !String.IsNullOrWhiteSpace(Content);
-      }
-    }
+    [Required]
+    public int UserId { get; set; }
+
+    [JsonIgnore]
+    [Required]
+    public User User { get; set; }
   }
 }

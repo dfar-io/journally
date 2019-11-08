@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HD.Journally.Extensions;
 using HD.Journally.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace HD.Journally.Services
@@ -58,9 +60,9 @@ namespace HD.Journally.Services
       return user;
     }
 
-    public User GetByEmail(string email)
+    public async Task<User> GetByEmailAsync(string email)
     {
-      return _context.Users.FirstOrDefault(u => u.Email == email);
+      return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
     private static void CreatePasswordHash(

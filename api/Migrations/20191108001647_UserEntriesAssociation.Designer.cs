@@ -4,14 +4,16 @@ using HD.Journally.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace api.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20191108001647_UserEntriesAssociation")]
+    partial class UserEntriesAssociation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +32,7 @@ namespace api.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("EntryId");
 
@@ -58,10 +60,9 @@ namespace api.Migrations
 
             modelBuilder.Entity("HD.Journally.Models.Entry", b =>
                 {
-                    b.HasOne("HD.Journally.Models.User", "User")
+                    b.HasOne("HD.Journally.Models.User")
                         .WithMany("Entries")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

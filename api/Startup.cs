@@ -22,8 +22,9 @@ namespace HD.Journally
       );
 
       // dependency injection
-      builder.Services.AddScoped<IUserService, UserService>();
       builder.Services.AddScoped<ITokenService, TokenService>();
+      builder.Services.AddScoped<IUserService, UserService>();
+      builder.Services.AddScoped<IEntryService, EntryService>();
 
       // sets all JSON payload properties to lowercase
       builder.Services.AddMvcCore()
