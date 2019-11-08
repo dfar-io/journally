@@ -45,7 +45,7 @@ module "function-app" {
   storage_account_kind                      = "StorageV2"
   storage_account_enable_https_traffic_only = "true"
   https_only                                = true
-  cors_allowed_origins                      = ["journally.io"]
+  cors_allowed_origins                      = ["https://journally.io"]
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${module.app-insights.instrumentation_key}"
