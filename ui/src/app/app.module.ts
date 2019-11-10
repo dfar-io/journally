@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import {
   NgbActiveModal,
   NgbAlertModule,
-  NgbDropdownModule,
   NgbModalModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { AboutModalComponent } from './about-modal/about-modal.component';
@@ -13,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginModalComponent } from './login-modal/login-modal.component';
 import { RegisterModalComponent } from './register-modal/register-modal.component';
+import { SharedModule } from './shared/shared.module';
 import { JwtInterceptor } from './user/jwt.interceptor';
 
 @NgModule({
@@ -30,7 +30,7 @@ import { JwtInterceptor } from './user/jwt.interceptor';
     NgbAlertModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbDropdownModule
+    SharedModule
   ],
   providers: [
     NgbActiveModal,

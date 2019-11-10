@@ -1,10 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Alert } from '../alert';
 import { RegisterModalComponent } from '../register-modal/register-modal.component';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
-import { Alert } from '../alert';
 
 @Component({
   selector: 'app-login-modal',
@@ -33,19 +33,23 @@ export class LoginModalComponent implements OnInit {
 
   authenticateUser() {
     this.isLoggingIn = true;
+    this.closeAlert();
 
     const user = new User();
     user.email = this.loginForm.value.email;
     user.password = this.loginForm.value.password;
 
     this.userService.authenticateUser(user).subscribe(
-      response => {
+      () => {
         this.isLoggingIn = false;
         this.activeModal.close();
       },
       errorResponse => {
-        this.modalAlert = new Alert('danger', errorResponse.error);
         this.isLoggingIn = false;
+        const errorMessage = errorResponse.error
+          ? errorResponse.error
+          : 'An unexpected error has occurred.';
+        this.modalAlert = new Alert('danger', errorMessage);
       }
     );
   }

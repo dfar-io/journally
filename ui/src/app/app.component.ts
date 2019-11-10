@@ -16,6 +16,7 @@ import { UserService } from './user/user.service';
 export class AppComponent implements OnInit {
   entry: Entry;
   currentUser: User;
+  isSaving: boolean;
 
   constructor(
     private entryService: EntryService,
@@ -56,9 +57,10 @@ export class AppComponent implements OnInit {
       return;
     }
 
+    this.isSaving = true;
     this.entryService
       .saveEntry(this.entry)
-      .subscribe(response => console.log('entry saved'));
+      .subscribe(() => (this.isSaving = false));
   }
 
   logout() {

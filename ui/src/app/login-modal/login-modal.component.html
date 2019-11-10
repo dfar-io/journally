@@ -54,7 +54,7 @@
 </div>
 
 <div class="modal-footer">
-  <a href="#" (click)="clickRegister()">Register</a>
+  <!-- uses flex-reverse direction, put these in reverse order -->
   <button
     *ngIf="!isLoggingIn"
     type="submit"
@@ -64,5 +64,6 @@
   >
     Login
   </button>
-  <span *ngIf="isLoggingIn">Logging in...</span>
+  <a *ngIf="!isLoggingIn" href="#" (click)="clickRegister()">Register</a>
+  <span *ngIf="isLoggingIn" class="text-right">Logging in...</span>
 </div>

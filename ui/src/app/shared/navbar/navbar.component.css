@@ -1,0 +1,17 @@
+.navbar {
+  padding: 0.5rem 0;
+}
+
+.btn.btn-navbar {
+  color: #fff;
+}
+
+.dropdown-menu {
+  border: 1px solid white;
+  color: white;
+  background-color: #2d1730;
+}
+
+.dropdown-menu button {
+  color: white;
+}
