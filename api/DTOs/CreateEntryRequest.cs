@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace HD.Journally.DTOs
 {
-  public class PostEntryRequest
+  public class CreateEntryRequest
   {
     [JsonRequired]
     public DateTime Date { get; set; }

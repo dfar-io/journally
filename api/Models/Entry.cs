@@ -11,8 +11,8 @@ namespace HD.Journally.Models
     [JsonProperty("id")]
     public int EntryId { get; set; }
 
-    [JsonProperty("date")]
-    [JsonConverter(typeof(DateFormatConverter), "yyyy-MM-dd")]
+    [JsonProperty("datetime")]
+    [JsonConverter(typeof(DateFormatConverter), "yyyy-MM-ddThh:mm:ss.000Z")]
     [Required]
     public DateTime Date { get; set; }
 

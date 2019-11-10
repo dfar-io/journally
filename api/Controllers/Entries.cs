@@ -17,6 +17,7 @@ using HD.Journally.DTOs;
 
 namespace HD.Journally.Controllers
 {
+  [ApiController]
   public class Entries
   {
     private readonly Context _context;
@@ -61,14 +62,14 @@ namespace HD.Journally.Controllers
       return new OkObjectResult(entries);
     }
 
-    [FunctionName("PostEntry")]
+    [FunctionName("CreateEntry")]
     [RequestHttpHeader("Authorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Entry))]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
     public async Task<IActionResult> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "entries")]
-        [RequestBodyType(typeof(PostEntryRequest), "Post Entry Request")]
+        [RequestBodyType(typeof(CreateEntryRequest), "Post Entry Request")]
         HttpRequest req,
         ILogger log)
     {
@@ -92,14 +93,26 @@ namespace HD.Journally.Controllers
         requestBody = await readStream.ReadToEndAsync();
       }
 
-      Entry data = null;
+      Entry data;
       try
       {
         data = JsonConvert.DeserializeObject<Entry>(requestBody);
       }
       catch (Exception e)
       {
-        HttpCodeHelper.Return400(e.Message);
+        return HttpCodeHelper.Return400(e.Message);
+      }
+
+      log.LogInformation($"date: {data.Date}");
+
+      if (data.Date == null)
+      {
+        return HttpCodeHelper.Return400("Content provided cannot be null.");
+      }
+
+      if (data.Content == null)
+      {
+        return HttpCodeHelper.Return400("Content provided cannot be null.");
       }
 
       var user = await _userService.GetByEmailAsync(authenticatedEmail);
