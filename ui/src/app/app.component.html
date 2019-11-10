@@ -1,29 +1,36 @@
 <div class="container">
-  <nav class="navbar">
-    <a class="navbar-brand">Journally</a>
-    <a href="#" class="my-2 my-lg-0" (click)="openLoginModal()">Login</a>
-  </nav>
+  <app-navbar
+    [currentUser]="currentUser"
+    (clickLogin)="openLoginModal()"
+    (clickLogout)="logout()"
+  ></app-navbar>
   <div class="row">
     <h1 class="col">{{ entry?.datetime | date: 'short' }}</h1>
   </div>
   <div class="row">
-    <form class="col">
-      <div class="form-group">
-        <textarea
-          class="form-control"
-          id="content"
-          rows="10"
-          [value]="entry?.content"
-          autofocus
-          placeholder="start your entry here..."
-        ></textarea>
-      </div>
-    </form>
+    <div class="col form-group">
+      <textarea
+        id="content"
+        class="form-control"
+        name="content"
+        required
+        autofocus
+        placeholder="start your entry here..."
+        [(ngModel)]="entry.content"
+      ></textarea>
+    </div>
   </div>
   <div class="row">
-    <div class="col d-flex flex-row-reverse">
-      <button type="submit" class="btn btn-primary btn-standard">Save</button>
+    <div *ngIf="!isSaving" class="col d-flex flex-row-reverse">
+      <button
+        type="submit"
+        class="btn btn-primary btn-standard"
+        (click)="saveEntry()"
+      >
+        Save
+      </button>
     </div>
+    <div *ngIf="isSaving" class="col d-flex flex-row-reverse">Saving...</div>
   </div>
   <div class="row">
     <div class="col text-center">

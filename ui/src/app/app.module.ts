@@ -1,18 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import {
+  NgbActiveModal,
+  NgbAlertModule,
+  NgbModalModule
+} from '@ng-bootstrap/ng-bootstrap';
+import { AboutModalComponent } from './about-modal/about-modal.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import {
-  NgbModalModule,
-  NgbActiveModal,
-  NgbAlertModule
-} from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from './login-modal/login-modal.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RegisterModalComponent } from './register-modal/register-modal.component';
-import { AboutModalComponent } from './about-modal/about-modal.component';
+import { SharedModule } from './shared/shared.module';
+import { JwtInterceptor } from './user/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,9 +29,13 @@ import { AboutModalComponent } from './about-modal/about-modal.component';
     NgbModalModule,
     NgbAlertModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
-  providers: [NgbActiveModal],
+  providers: [
+    NgbActiveModal,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     LoginModalComponent,

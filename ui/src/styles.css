@@ -33,6 +33,9 @@ body {
 .alert.alert-success {
   background-color: #006600;
 }
+.alert.alert-warning {
+  background-color: #806000;
+}
 
 a {
   color: #e48aff;
