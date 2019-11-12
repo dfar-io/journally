@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   entry: Entry;
   currentUser: User;
   isSaving: boolean;
+  isNewEntry = true;
 
   constructor(
     private entryService: EntryService,
@@ -58,9 +59,20 @@ export class AppComponent implements OnInit {
     }
 
     this.isSaving = true;
-    this.entryService
-      .saveEntry(this.entry)
-      .subscribe(() => (this.isSaving = false));
+
+    if (this.isNewEntry) {
+      this.entryService.createEntry(this.entry).subscribe(response => {
+        console.log(response);
+        this.isSaving = false;
+        this.entry.id = response.id;
+        this.isNewEntry = false;
+        console.log(this.entry);
+      });
+    } else {
+      this.entryService.updateEntry(this.entry).subscribe(() => {
+        this.isSaving = false;
+      });
+    }
   }
 
   logout() {

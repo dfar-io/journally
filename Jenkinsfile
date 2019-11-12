@@ -14,6 +14,7 @@ pipeline {
       steps {
         dir("ui") {
           sh 'npm ci'
+          sh 'npm run lint'
           sh 'npm run build -- --prod'
         }
       }

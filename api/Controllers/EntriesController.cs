@@ -18,13 +18,13 @@ using HD.Journally.DTOs;
 namespace HD.Journally.Controllers
 {
   [ApiController]
-  public class Entries
+  public class EntryController
   {
     private readonly Context _context;
     private readonly ITokenService _tokenService;
     private readonly IUserService _userService;
     private readonly IEntryService _entryService;
-    public Entries(
+    public EntryController(
       Context context,
       ITokenService tokenService,
       IUserService userService,
@@ -62,16 +62,18 @@ namespace HD.Journally.Controllers
       return new OkObjectResult(entries);
     }
 
-    [FunctionName("CreateEntry")]
+    [FunctionName("UpdateEntry")]
     [RequestHttpHeader("Authorization", isRequired: true)]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Entry))]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
-    public async Task<IActionResult> Post(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "entries")]
-        [RequestBodyType(typeof(CreateEntryRequest), "Post Entry Request")]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> Put(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "entries/{entryId}")]
+        [RequestBodyType(typeof(UpdateEntryRequest), "UpdateEntryRequest")]
         HttpRequest req,
-        ILogger log)
+        ILogger log,
+        int entryId)
     {
       string authenticatedEmail;
       try
@@ -85,7 +87,15 @@ namespace HD.Journally.Controllers
       }
 
       if (req.ContentLength <= 0)
-        return HttpCodeHelper.EmptyPOSTBody();
+        return HttpCodeHelper.EmptyRequestBody();
+
+      User user = await _userService.GetByEmailAsync(authenticatedEmail);
+      Entry entry = await _entryService.GetUserEntryByIdAsync(user, entryId);
+
+      if (entry == null)
+      {
+        return new NotFoundResult();
+      }
 
       string requestBody;
       using (StreamReader readStream = new StreamReader(req.Body))
@@ -103,11 +113,65 @@ namespace HD.Journally.Controllers
         return HttpCodeHelper.Return400(e.Message);
       }
 
-      log.LogInformation($"date: {data.Date}");
+      if (data.DateTime == null)
+      {
+        return HttpCodeHelper.Return400("Date provided cannot be null.");
+      }
 
-      if (data.Date == null)
+      if (data.Content == null)
       {
         return HttpCodeHelper.Return400("Content provided cannot be null.");
+      }
+
+      await _entryService.UpdateEntryAsync(entryId, data);
+
+      return new NoContentResult();
+    }
+
+    [FunctionName("CreateEntry")]
+    [RequestHttpHeader("Authorization", isRequired: true)]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Entry))]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
+    public async Task<IActionResult> Post(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "entries")]
+        [RequestBodyType(typeof(CreateEntryRequest), "CreateEntryRequest")]
+        HttpRequest req,
+        ILogger log)
+    {
+      string authenticatedEmail;
+      try
+      {
+        authenticatedEmail = _tokenService.GetEmailFromBearerToken(req);
+      }
+      catch (JournallyException ex)
+      {
+        log.LogWarning($"Authorization error when calling /entries: {ex.Message}");
+        return new UnauthorizedResult();
+      }
+
+      if (req.ContentLength <= 0)
+        return HttpCodeHelper.EmptyRequestBody();
+
+      string requestBody;
+      using (StreamReader readStream = new StreamReader(req.Body))
+      {
+        requestBody = await readStream.ReadToEndAsync();
+      }
+
+      Entry data;
+      try
+      {
+        data = JsonConvert.DeserializeObject<Entry>(requestBody);
+      }
+      catch (Exception e)
+      {
+        return HttpCodeHelper.Return400(e.Message);
+      }
+
+      if (data.DateTime == null)
+      {
+        return HttpCodeHelper.Return400("Date provided cannot be null.");
       }
 
       if (data.Content == null)
@@ -121,12 +185,7 @@ namespace HD.Journally.Controllers
       await _context.Entries.AddAsync(data);
       await _context.SaveChangesAsync();
 
-      return new CreatedResult("https://example.com/api/entries/201", new
-      {
-        data.EntryId,
-        data.Date,
-        data.Content
-      });
+      return new CreatedResult("https://example.com/api/entries/201", data);
     }
   }
 }

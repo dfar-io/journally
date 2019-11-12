@@ -16,7 +16,11 @@ export class EntryService {
     return this.httpClient.get<Entry[]>(`${this.apiUrl}entries`);
   }
 
-  saveEntry(entry: Entry): Observable<Entry> {
+  createEntry(entry: Entry): Observable<Entry> {
     return this.httpClient.post<Entry>(`${this.apiUrl}entries`, entry);
+  }
+
+  updateEntry(entry: Entry) {
+    return this.httpClient.put(`${this.apiUrl}entries/${entry.id}`, entry);
   }
 }

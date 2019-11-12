@@ -11,7 +11,7 @@ namespace HD.Journally.Helpers
         + "payload is constructed correctly.");
     }
 
-    public static IActionResult EmptyPOSTBody()
+    public static IActionResult EmptyRequestBody()
     {
       return Return400("No content included in request.");
     }

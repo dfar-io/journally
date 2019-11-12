@@ -10,22 +10,18 @@ using Newtonsoft.Json;
 using HD.Journally.Helpers;
 using HD.Journally.Services;
 using HD.Journally.Models;
-using System.Text;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using HD.Journally.DTOs;
 
 namespace HD.Journally.Controllers
 {
-  public class Users
+  public class UserController
   {
     private readonly IUserService _userService;
     private readonly ITokenService _tokenService;
 
-    public Users(IUserService userService, ITokenService tokenService)
+    public UserController(IUserService userService, ITokenService tokenService)
     {
       _userService = userService;
       _tokenService = tokenService;
@@ -44,7 +40,7 @@ namespace HD.Journally.Controllers
         ILogger log)
     {
       if (req.ContentLength <= 0)
-        return HttpCodeHelper.EmptyPOSTBody();
+        return HttpCodeHelper.EmptyRequestBody();
 
       string requestBody;
       using (StreamReader readStream = new StreamReader(req.Body))
@@ -96,7 +92,7 @@ namespace HD.Journally.Controllers
         HttpRequest req)
     {
       if (req.ContentLength <= 0)
-        return HttpCodeHelper.EmptyPOSTBody();
+        return HttpCodeHelper.EmptyRequestBody();
 
       string requestBody;
       using (StreamReader readStream = new StreamReader(req.Body))

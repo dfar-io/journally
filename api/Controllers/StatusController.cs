@@ -10,11 +10,11 @@ using System.Net;
 
 namespace HD.Journally
 {
-  public class Status
+  public class StatusController
   {
     private readonly ITokenService _tokenService;
 
-    public Status(ITokenService tokenService)
+    public StatusController(ITokenService tokenService)
     {
       _tokenService = tokenService;
     }
