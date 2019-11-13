@@ -2,10 +2,19 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);
 
+html {
+  height: 100%;
+}
+
 body {
   background-color: #2d1730;
   color: #ffffff;
   font-family: 'Fira Code', monospace;
+  height: 100%;
+}
+
+.container {
+  height: 100%;
 }
 
 .modal-content {

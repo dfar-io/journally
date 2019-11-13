@@ -62,11 +62,9 @@ export class AppComponent implements OnInit {
 
     if (this.isNewEntry) {
       this.entryService.createEntry(this.entry).subscribe(response => {
-        console.log(response);
         this.isSaving = false;
         this.entry.id = response.id;
         this.isNewEntry = false;
-        console.log(this.entry);
       });
     } else {
       this.entryService.updateEntry(this.entry).subscribe(() => {
