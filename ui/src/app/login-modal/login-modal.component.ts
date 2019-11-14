@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Alert } from '../alert';
-import { RegisterModalComponent } from '../register-modal/register-modal.component';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 
@@ -54,14 +53,8 @@ export class LoginModalComponent implements OnInit {
     );
   }
 
-  // circular dependency introduced, need to remove this
-  // check out
-  // https://github.com/angular/components/issues/3593#issuecomment-286397115
   clickRegister() {
-    this.activeModal.close();
-    this.modalService.open(RegisterModalComponent, {
-      centered: true
-    });
+    this.activeModal.close('openRegisterModal');
   }
 
   closeAlert() {

@@ -5,6 +5,7 @@ import { Alert } from './alert';
 import { Entry } from './entries/entry';
 import { EntryService } from './entries/entry.service';
 import { LoginModalComponent } from './login-modal/login-modal.component';
+import { RegisterModalComponent } from './register-modal/register-modal.component';
 import { User } from './user/user';
 import { UserService } from './user/user.service';
 
@@ -33,9 +34,28 @@ export class AppComponent implements OnInit {
     this.entry.content = null;
   }
 
-  openLoginModal() {
-    this.modalService.open(LoginModalComponent, {
+  openLoginModal(alert: Alert = null) {
+    const modalRef = this.modalService.open(LoginModalComponent, {
       centered: true
+    });
+    modalRef.componentInstance.modalAlert = alert;
+
+    modalRef.result.then(result => {
+      if (result === 'openRegisterModal') {
+        this.openRegisterModal();
+      }
+    });
+  }
+
+  openRegisterModal() {
+    const modalRef = this.modalService.open(RegisterModalComponent, {
+      centered: true
+    });
+
+    modalRef.result.then(result => {
+      if (result.event === 'openLoginModal') {
+        this.openLoginModal(result.alert);
+      }
     });
   }
 

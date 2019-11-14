@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { LoginModalComponent } from '../login-modal/login-modal.component';
-import { UserService } from '../user/user.service';
-import { User } from '../user/user';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Alert } from '../alert';
+import { User } from '../user/user';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-register-modal',
@@ -50,20 +49,8 @@ export class RegisterModalComponent implements OnInit {
     );
   }
 
-  // circular dependency introduced, need to remove this
-  // check out
-  // https://github.com/angular/components/issues/3593#issuecomment-286397115
   backToLogin(alert: Alert = null) {
-    this.activeModal.close();
-
-    if (alert == null) {
-      return;
-    }
-
-    const modalRef = this.modalService.open(LoginModalComponent, {
-      centered: true
-    });
-    modalRef.componentInstance.modalAlert = alert;
+    this.activeModal.close({ event: 'openLoginModal', alert });
   }
 
   closeAlert() {

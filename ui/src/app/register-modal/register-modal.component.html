@@ -4,7 +4,7 @@
     type="button"
     class="close"
     aria-label="Close"
-    (click)="activeModal.dismiss()"
+    (click)="activeModal.close()"
   >
     <span aria-hidden="true">&times;</span>
   </button>
@@ -67,7 +67,6 @@
 </div>
 
 <div class="modal-footer">
-  <a href="#" (click)="backToLogin()">Back to Login</a>
   <button
     *ngIf="!isRegistering"
     type="submit"
@@ -80,5 +79,6 @@
   >
     Register
   </button>
-  <span *ngIf="isRegistering">Registering...</span>
+  <a href="#" *ngIf="!isRegistering" (click)="backToLogin()">Back to Login</a>
+  <span *ngIf="isRegistering" class="text-right">Registering...</span>
 </div>
