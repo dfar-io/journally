@@ -53,6 +53,7 @@ textarea::-webkit-scrollbar-thumb {
 label {
   display: block;
   margin-bottom: 0;
+  height: 100%;
 }
 
 @media (min-width: 576px) {
