@@ -50,6 +50,11 @@ textarea::-webkit-scrollbar-thumb {
   margin-left: auto;
 }
 
+label {
+  display: block;
+  margin-bottom: 0;
+}
+
 @media (min-width: 576px) {
   h1 {
     font-size: 2.5rem;

@@ -9,15 +9,17 @@
   </div>
   <div class="row h-100">
     <div class="col form-group">
-      <textarea
-        id="content"
-        class="form-control"
-        name="content"
-        required
-        autofocus
-        placeholder="start your entry here..."
-        [(ngModel)]="entry.content"
-      ></textarea>
+      <label for="content" aria-label="content" aria-labelledby="content">
+        <textarea
+          id="content"
+          class="form-control"
+          name="content"
+          required
+          autofocus
+          placeholder="start your entry here..."
+          [(ngModel)]="entry.content"
+        ></textarea>
+      </label>
     </div>
   </div>
   <div class="row fixed-bottom mb-5 save-row">
