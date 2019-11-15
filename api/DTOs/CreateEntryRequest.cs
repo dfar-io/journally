@@ -9,5 +9,6 @@ namespace HD.Journally.DTOs
     public DateTime DateTime { get; set; }
     [JsonRequired]
     public string Content { get; set; }
+    public string Title { get; set; }
   }
 }

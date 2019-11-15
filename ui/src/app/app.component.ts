@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   currentUser: User;
   isSaving: boolean;
   isNewEntry = true;
+  hasTitle = false;
 
   constructor(
     private entryService: EntryService,

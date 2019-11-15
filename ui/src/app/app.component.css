@@ -20,6 +20,11 @@ h1 {
   font-size: 1.6rem;
 }
 
+h2 {
+  text-align: left;
+  font-size: 1rem;
+}
+
 textarea::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -56,8 +61,22 @@ label {
   height: 100%;
 }
 
+/* needs to match h1 */
+input {
+  text-align: left;
+  font-size: 1.6rem;
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
 @media (min-width: 576px) {
-  h1 {
+  h1,
+  input {
     font-size: 2.5rem;
   }
 

@@ -19,6 +19,8 @@ namespace HD.Journally.Models
     [Required]
     public string Content { get; set; }
 
+    public string Title { get; set; }
+
     [JsonIgnore]
     [Required]
     public int UserId { get; set; }

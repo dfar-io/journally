@@ -4,7 +4,7 @@ using HD.Journally.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-
+using Newtonsoft.Json;
 
 [assembly: FunctionsStartup(typeof(HD.Journally.Startup))]
 
@@ -17,6 +17,7 @@ namespace HD.Journally
       string SqlConnection =
         Environment.GetEnvironmentVariable(Constants.ConnectionStringKey);
 
+      // add EF context
       builder.Services.AddDbContext<Context>(
         options => options.UseSqlServer(SqlConnection)
       );
@@ -26,11 +27,19 @@ namespace HD.Journally
       builder.Services.AddScoped<IUserService, UserService>();
       builder.Services.AddScoped<IEntryService, EntryService>();
 
-      // sets all JSON payload properties to lowercase
+      // sets all JSON payload properties to
+      //   lowercase
+      //   hide null values from payloads
       builder.Services.AddMvcCore()
                       .AddJsonOptions(
-                        options => options.SerializerSettings.ContractResolver =
-                        new LowercaseContractResolver())
+                        options =>
+                        {
+                          options.SerializerSettings.ContractResolver =
+                            new LowercaseContractResolver();
+                          options.SerializerSettings.NullValueHandling =
+                            NullValueHandling.Ignore;
+                        }
+                      )
                       .AddJsonFormatters();
     }
   }

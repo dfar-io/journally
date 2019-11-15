@@ -7,5 +7,6 @@ namespace HD.Journally.DTOs
   {
     [JsonRequired]
     public string Content { get; set; }
+    public string Title { get; set; }
   }
 }
