@@ -14,13 +14,17 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
 import { RegisterModalComponent } from './register-modal/register-modal.component';
 import { SharedModule } from './shared/shared.module';
 import { JwtInterceptor } from './user/jwt.interceptor';
+import { EntryPageComponent } from './entry-page/entry-page.component';
+import { EntriesPageComponent } from './entries-page/entries-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginModalComponent,
     RegisterModalComponent,
-    AboutModalComponent
+    AboutModalComponent,
+    EntryPageComponent,
+    EntriesPageComponent
   ],
   imports: [
     BrowserModule,

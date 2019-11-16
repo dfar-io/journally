@@ -12,7 +12,20 @@
       aria-labelledby="user-dropdown"
       class="dropdown-menu dropdown-menu-right"
     >
-      <button ngbDropdownItem>Entries</button>
+      <button
+        ngbDropdownItem
+        *ngIf="!onWriteEntryPage()"
+        (click)="onClickWriteEntry()"
+      >
+        Write Entry
+      </button>
+      <button
+        *ngIf="!onEntriesPage()"
+        ngbDropdownItem
+        (click)="onClickEntries()"
+      >
+        Entries
+      </button>
       <button ngbDropdownItem (click)="onClickLogout()">Logout</button>
     </div>
   </div>

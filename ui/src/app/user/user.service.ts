@@ -42,6 +42,10 @@ export class UserService {
     );
   }
 
+  isLoggedIn() {
+    return this.currentUserValue != null;
+  }
+
   logoutUser() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);

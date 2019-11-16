@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/user/user';
 
 @Component({
@@ -10,8 +11,10 @@ export class NavbarComponent implements OnInit {
   @Input() currentUser: User;
   @Output() clickLogin = new EventEmitter();
   @Output() clickLogout = new EventEmitter();
+  @Output() clickEntries = new EventEmitter();
+  @Output() clickWriteEntry = new EventEmitter();
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {}
 
@@ -21,5 +24,21 @@ export class NavbarComponent implements OnInit {
 
   onClickLogout() {
     this.clickLogout.emit();
+  }
+
+  onClickEntries() {
+    this.clickEntries.emit();
+  }
+
+  onClickWriteEntry() {
+    this.clickWriteEntry.emit();
+  }
+
+  onWriteEntryPage() {
+    return this.router.url === '/';
+  }
+
+  onEntriesPage() {
+    return this.router.url === '/entries';
   }
 }

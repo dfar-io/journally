@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col entries">
+    <div *ngFor="let entry of entries" class="row">
+      <a [routerLink]="['/entries/', entry.id]" class="col">{{
+        entry.datetime | date: 'short'
+      }}</a>
+    </div>
+  </div>
+</div>

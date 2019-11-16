@@ -15,3 +15,11 @@
 .dropdown-menu button {
   color: white;
 }
+
+.dropdown-menu button:hover {
+  color: black;
+}
+
+.dropdown-menu button:active {
+  background-color: #e48aff;
+}

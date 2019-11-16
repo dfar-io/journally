@@ -3,60 +3,8 @@
     [currentUser]="currentUser"
     (clickLogin)="openLoginModal()"
     (clickLogout)="logout()"
+    (clickEntries)="openEntries()"
+    (clickWriteEntry)="openWriteEntry()"
   ></app-navbar>
-  <div class="row">
-    <div class="col">
-      <h1 *ngIf="!hasTitle">{{ entry?.datetime | date: 'short' }}</h1>
-      <input
-        *ngIf="hasTitle"
-        placeholder="add title..."
-        [(ngModel)]="entry.title"
-      />
-    </div>
-  </div>
-  <div class="row" *ngIf="hasTitle">
-    <div class="col">
-      <h2>{{ entry?.datetime | date: 'short' }}</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <a href="#" *ngIf="!hasTitle" (click)="hasTitle = !hasTitle">Add Title</a>
-      <a href="#" *ngIf="hasTitle" (click)="hasTitle = !hasTitle"
-        >Remove Title</a
-      >
-    </div>
-  </div>
-  <div class="row h-100">
-    <div class="col form-group">
-      <label for="content" aria-label="content" aria-labelledby="content">
-        <textarea
-          id="content"
-          class="form-control"
-          name="content"
-          required
-          autofocus
-          placeholder="start your entry here..."
-          [(ngModel)]="entry.content"
-        ></textarea>
-      </label>
-    </div>
-  </div>
-  <div class="row fixed-bottom mb-5 save-row">
-    <div *ngIf="!isSaving" class="col d-flex flex-row-reverse">
-      <button
-        type="submit"
-        class="btn btn-primary btn-standard"
-        (click)="saveEntry()"
-      >
-        Save
-      </button>
-    </div>
-    <div *ngIf="isSaving" class="col d-flex flex-row-reverse">Saving...</div>
-  </div>
-  <div class="row fixed-bottom mb-3">
-    <div class="col text-center">
-      <a href="#" (click)="openAboutModal()">About/Contact</a>
-    </div>
-  </div>
+  <router-outlet></router-outlet>
 </div>
