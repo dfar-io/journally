@@ -21,7 +21,7 @@ namespace HD.Journally.Services
       return await _context.Entries.Where(e => e.User == user).ToListAsync();
     }
 
-    public async Task<Entry> GetUserEntryByIdAsync(User user, int entryId)
+    public async Task<Entry> GetEntryByIdAsync(User user, int entryId)
     {
       return await _context.Entries.FirstOrDefaultAsync(
         e => e.User == user && e.EntryId == entryId);

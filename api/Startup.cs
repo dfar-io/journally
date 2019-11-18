@@ -17,6 +17,12 @@ namespace HD.Journally
       string SqlConnection =
         Environment.GetEnvironmentVariable(Constants.ConnectionStringKey);
 
+      if (SqlConnection == null)
+      {
+        throw new ArgumentNullException(
+          $"Environment variable {Constants.ConnectionStringKey} not set.");
+      }
+
       // add EF context
       builder.Services.AddDbContext<Context>(
         options => options.UseSqlServer(SqlConnection)

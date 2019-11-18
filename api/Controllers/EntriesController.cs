@@ -62,6 +62,33 @@ namespace HD.Journally.Controllers
       return new OkObjectResult(entries);
     }
 
+    [FunctionName("GetEntry")]
+    [RequestHttpHeader("Authorization", isRequired: true)]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Entry))]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public async Task<IActionResult> GetEntry(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "entries/{entryId}")]
+        HttpRequest req,
+        ILogger log,
+        int entryId)
+    {
+      string authenticatedEmail;
+      try
+      {
+        authenticatedEmail = _tokenService.GetEmailFromBearerToken(req);
+      }
+      catch (JournallyException ex)
+      {
+        log.LogWarning(
+          $"Authorization error when calling /entries/{entryId}: {ex.Message}");
+        return new UnauthorizedResult();
+      }
+
+      var user = await _userService.GetByEmailAsync(authenticatedEmail);
+      var entry = await _entryService.GetEntryByIdAsync(user, entryId);
+      return new OkObjectResult(entry);
+    }
+
     [FunctionName("UpdateEntry")]
     [RequestHttpHeader("Authorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
@@ -90,7 +117,7 @@ namespace HD.Journally.Controllers
         return HttpCodeHelper.EmptyRequestBody();
 
       User user = await _userService.GetByEmailAsync(authenticatedEmail);
-      Entry entry = await _entryService.GetUserEntryByIdAsync(user, entryId);
+      Entry entry = await _entryService.GetEntryByIdAsync(user, entryId);
 
       if (entry == null)
       {

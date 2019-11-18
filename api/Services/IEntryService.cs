@@ -8,7 +8,7 @@ namespace HD.Journally.Services
   {
     Task<IEnumerable<Entry>> GetEntriesFromUserAsync(User user);
 
-    Task<Entry> GetUserEntryByIdAsync(User user, int entryId);
+    Task<Entry> GetEntryByIdAsync(User user, int entryId);
 
     Task UpdateEntryAsync(int entryId, Entry entry);
   }
