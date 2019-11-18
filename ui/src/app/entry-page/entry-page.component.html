@@ -16,7 +16,6 @@
 <div class="row">
   <div class="col">
     <a href="#" *ngIf="!hasTitle" (click)="hasTitle = !hasTitle">Add Title</a>
-    <a href="#" *ngIf="hasTitle" (click)="hasTitle = !hasTitle">Remove Title</a>
   </div>
 </div>
 <div class="row h-100">
@@ -35,6 +34,13 @@
   </div>
 </div>
 <div class="row fixed-bottom mb-5 save-row">
+  <div
+    *ngIf="entryWordCount > 10"
+    class="col d-flex text-left"
+    style="align-self: center"
+  >
+    {{ entryWordCount }} Words
+  </div>
   <div *ngIf="!isSaving" class="col d-flex flex-row-reverse">
     <button
       type="submit"
@@ -48,6 +54,6 @@
 </div>
 <div class="row fixed-bottom mb-3">
   <div class="col text-center">
-    <a href="javascript:;" (click)="openAboutModal()">About/Contact</a>
+    <a href="javascript:;" (click)="openAboutModal()">About</a>
   </div>
 </div>

@@ -34,6 +34,14 @@ export class EntryPageComponent implements OnInit {
     this.entry.content = null;
   }
 
+  get entryWordCount() {
+    if (this.entry.content == null) {
+      return 0;
+    }
+
+    return this.entry.content.split(' ').length;
+  }
+
   openAboutModal() {
     this.modalService.open(AboutModalComponent, {
       centered: true
