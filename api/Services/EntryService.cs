@@ -18,7 +18,9 @@ namespace HD.Journally.Services
 
     public async Task<IEnumerable<Entry>> GetEntriesFromUserAsync(User user)
     {
-      return await _context.Entries.Where(e => e.User == user).ToListAsync();
+      return await _context.Entries.Where(e => e.User == user)
+                                   .OrderByDescending(e => e.DateTime)
+                                   .ToListAsync();
     }
 
     public async Task<Entry> GetEntryByIdAsync(User user, int entryId)

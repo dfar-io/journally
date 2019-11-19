@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AboutModalComponent } from '../about-modal/about-modal.component';
 import { Alert } from '../alert';
@@ -23,15 +24,24 @@ export class EntryPageComponent implements OnInit {
   constructor(
     private entryService: EntryService,
     private modalService: NgbModal,
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {
     this.userService.currentUser.subscribe(x => (this.currentUser = x));
   }
 
   ngOnInit() {
-    this.entry = new Entry();
-    this.entry.datetime = new Date();
-    this.entry.content = null;
+    this.route.data.subscribe(data => {
+      this.entry = data.entry;
+      this.isNewEntry = false;
+
+      if (this.entry == null) {
+        this.entry = new Entry();
+        this.entry.datetime = new Date();
+        this.entry.content = null;
+        this.isNewEntry = true;
+      }
+    });
   }
 
   get entryWordCount() {

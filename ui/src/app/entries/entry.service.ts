@@ -16,6 +16,10 @@ export class EntryService {
     return this.httpClient.get<Entry[]>(`${this.apiUrl}entries`);
   }
 
+  getEntry(entryId: number): Observable<Entry> {
+    return this.httpClient.get<Entry>(`${this.apiUrl}entries/${entryId}`);
+  }
+
   createEntry(entry: Entry): Observable<Entry> {
     return this.httpClient.post<Entry>(`${this.apiUrl}entries`, entry);
   }

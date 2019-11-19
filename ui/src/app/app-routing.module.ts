@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EntriesPageComponent } from './entries-page/entries-page.component';
 import { EntryPageComponent } from './entry-page/entry-page.component';
+import { EntryResolver } from './entry-page/entry-page.resolver';
 import { AuthGuard } from './shared/auth.guard';
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   {
     path: 'entries/:id',
     component: EntryPageComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { entry: EntryResolver }
   },
   {
     path: 'entries',
