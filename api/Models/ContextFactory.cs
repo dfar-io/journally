@@ -8,9 +8,17 @@ namespace HD.Journally.Models
   {
     public Context CreateDbContext(string[] args)
     {
+      string SqlConnection =
+        Environment.GetEnvironmentVariable(Constants.ConnectionStringKey);
+
+      if (SqlConnection == null)
+      {
+        throw new ArgumentNullException(
+          $"Environment variable {Constants.ConnectionStringKey} not set.");
+      }
+
       var optionsBuilder = new DbContextOptionsBuilder<Context>();
-      optionsBuilder.UseSqlServer(
-        Environment.GetEnvironmentVariable(Constants.ConnectionStringKey));
+      optionsBuilder.UseSqlServer(SqlConnection);
 
       return new Context(optionsBuilder.Options);
     }

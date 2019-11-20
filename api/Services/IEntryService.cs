@@ -11,5 +11,9 @@ namespace HD.Journally.Services
     Task<Entry> GetEntryByIdAsync(User user, int entryId);
 
     Task UpdateEntryAsync(int entryId, Entry entry);
+
+    Task DeleteEntryAsync(int entryId);
+
+    Task AddEntryAsync(Entry entry);
   }
 }

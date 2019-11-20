@@ -20,17 +20,14 @@ namespace HD.Journally.Controllers
   [ApiController]
   public class EntryController
   {
-    private readonly Context _context;
     private readonly ITokenService _tokenService;
     private readonly IUserService _userService;
     private readonly IEntryService _entryService;
     public EntryController(
-      Context context,
       ITokenService tokenService,
       IUserService userService,
       IEntryService entryService)
     {
-      _context = context;
       _tokenService = tokenService;
       _userService = userService;
       _entryService = entryService;
@@ -209,10 +206,47 @@ namespace HD.Journally.Controllers
       var user = await _userService.GetByEmailAsync(authenticatedEmail);
       data.UserId = user.Id;
 
-      await _context.Entries.AddAsync(data);
-      await _context.SaveChangesAsync();
+      await _entryService.AddEntryAsync(data);
 
       return new CreatedResult("https://example.com/api/entries/201", data);
+    }
+
+    [FunctionName("DeleteEntry")]
+    [RequestHttpHeader("Authorization", isRequired: true)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
+    public async Task<IActionResult> Delete(
+        [HttpTrigger(
+          AuthorizationLevel.Anonymous,
+          "delete",
+          Route = "entries/{entryId}")]
+        HttpRequest req,
+        ILogger log,
+        int entryId)
+    {
+      string authenticatedEmail;
+      try
+      {
+        authenticatedEmail = _tokenService.GetEmailFromBearerToken(req);
+      }
+      catch (JournallyException ex)
+      {
+        log.LogWarning($"Authorization error when calling /entries: {ex.Message}");
+        return new UnauthorizedResult();
+      }
+
+      User user = await _userService.GetByEmailAsync(authenticatedEmail);
+      Entry entry = await _entryService.GetEntryByIdAsync(user, entryId);
+
+      if (entry == null)
+      {
+        return new NotFoundResult();
+      }
+
+      await _entryService.DeleteEntryAsync(entryId);
+
+      return new NoContentResult();
     }
   }
 }

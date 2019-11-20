@@ -35,11 +35,34 @@ namespace HD.Journally.Services
 
       if (oldEntry == null)
       {
-        throw new ArgumentException($"Entry with id {entryId} not found when attempting update.");
+        throw new ArgumentException(
+          $"Entry with id {entryId} not found when attempting update.");
       }
 
       oldEntry.Content = entry.Content;
 
+      await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteEntryAsync(int entryId)
+    {
+      var entry = _context.Entries.FirstOrDefault(e => e.EntryId == entryId);
+
+      if (entry == null)
+      {
+        throw new ArgumentException(
+          $"Entry with id {entryId} not found when attempting update.");
+      }
+
+      _context.Entries.Attach(entry);
+      _context.Entries.Remove(entry);
+
+      await _context.SaveChangesAsync();
+    }
+
+    public async Task AddEntryAsync(Entry entry)
+    {
+      await _context.Entries.AddAsync(entry);
       await _context.SaveChangesAsync();
     }
   }

@@ -14,8 +14,16 @@ namespace HD.Journally
   {
     public override void Configure(IFunctionsHostBuilder builder)
     {
+      ConfigureDatabase(builder);
+      SetDependencyInjection(builder);
+      ConfigureJSONPayloads(builder);
+    }
+
+    private void ConfigureDatabase(IFunctionsHostBuilder builder)
+    {
       string SqlConnection =
-        Environment.GetEnvironmentVariable(Constants.ConnectionStringKey);
+                    Environment.GetEnvironmentVariable(
+                      Constants.ConnectionStringKey);
 
       if (SqlConnection == null)
       {
@@ -23,19 +31,35 @@ namespace HD.Journally
           $"Environment variable {Constants.ConnectionStringKey} not set.");
       }
 
-      // add EF context
       builder.Services.AddDbContext<Context>(
-        options => options.UseSqlServer(SqlConnection)
-      );
+        options => options.UseSqlServer(SqlConnection));
 
-      // dependency injection
+      var optionsBuilder = new DbContextOptionsBuilder<Context>();
+      optionsBuilder.UseSqlServer(SqlConnection);
+
+      using (var context = new Context(optionsBuilder.Options))
+      {
+        try
+        {
+          context.Database.Migrate();
+        }
+        catch (Exception e)
+        {
+          throw new Exception(
+            $"Error when migrating database: {e.Message}");
+        }
+      }
+    }
+
+    private void SetDependencyInjection(IFunctionsHostBuilder builder)
+    {
       builder.Services.AddScoped<ITokenService, TokenService>();
       builder.Services.AddScoped<IUserService, UserService>();
       builder.Services.AddScoped<IEntryService, EntryService>();
+    }
 
-      // sets all JSON payload properties to
-      //   lowercase
-      //   hide null values from payloads
+    private void ConfigureJSONPayloads(IFunctionsHostBuilder builder)
+    {
       builder.Services.AddMvcCore()
                       .AddJsonOptions(
                         options =>

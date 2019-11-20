@@ -51,6 +51,7 @@ module "function-app" {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${module.app-insights.instrumentation_key}"
     JOURNALLY_CONN_STR             = "Server=tcp:${module.sql-server.sqlserver_name}.database.windows.net,1433;Initial Catalog=journally;Persist Security Info=False;User ID=${module.sql-server.sqlserver_administrator_login};Password=${module.sql-server.sqlserver_administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     JOURNALLY_JWT_SECRET           = "${random_string.dbServerPassword.result}"
+    WEBSITE_RUN_FROM_PACKAGE       = "1"
   }
 }
 
@@ -112,6 +113,15 @@ module "sql-server" {
   location  = "${azurerm_resource_group.rg.location}"
   rg_name   = "${azurerm_resource_group.rg.name}"
   databases = ["journally"]
+}
+
+module "service-principal" {
+  source                     = "dfar-io/service-principal/azurerm"
+  version                    = "1.2.1"
+  available_to_other_tenants = false
+  name                       = "${var.prefix}-${var.env}-sp"
+  subscription_id            = "a3fa6f62-77b0-4b51-8017-5f1496d0a7ff"
+  scope_id                   = "${azurerm_resource_group.rg.id}"
 }
 
 resource "azurerm_app_service_custom_hostname_binding" "hostname" {
@@ -178,4 +188,8 @@ output "CNAMERecords" {
 
 output "CreateLetsEncryptCerts" {
   value = "5. Create 2 Let's Encrypt Certs, convert to PFX, add to Function App and Key Vault"
+}
+
+output "AddGithubActionsData" {
+  value = "6. Create AZURE_CREDENTIALS with ID ${module.service-principal.client_id} and secret ${module.service-principal.client_secret}"
 }
