@@ -1,3 +1,5 @@
+![](https://github.com/dfar-io/journally/workflows/Build%20&#x26;%20Deploy/badge.svg)
+
 # Journally
 
 Journally is a minimalist journal web application meant to provide a means for jotting down your thoughts.
