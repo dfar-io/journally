@@ -68,6 +68,8 @@ namespace HD.Journally
                             new LowercaseContractResolver();
                           options.SerializerSettings.NullValueHandling =
                             NullValueHandling.Ignore;
+                          options.SerializerSettings.DateTimeZoneHandling =
+                            DateTimeZoneHandling.Utc;
                         }
                       )
                       .AddJsonFormatters();
