@@ -1,11 +1,12 @@
 textarea {
-  background-color: transparent;
+  background-color: #1a0e1c;
   border: 0;
   color: #fff;
   font-size: 1rem;
   resize: none;
-  padding: 1rem 0;
+  padding: 1rem;
   height: calc(100% - 200px);
+  border-radius: 1rem;
 }
 
 .form-control:focus {
