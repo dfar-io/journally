@@ -1,21 +1,11 @@
 <div class="row">
   <div class="col">
-    <h1 *ngIf="!hasTitle">{{ entry?.datetime | date: 'short' }}</h1>
-    <input
-      *ngIf="hasTitle"
-      placeholder="add title..."
-      [(ngModel)]="entry.title"
-    />
-  </div>
-</div>
-<div class="row" *ngIf="hasTitle">
-  <div class="col">
-    <h2>{{ entry?.datetime | date: 'short' }}</h2>
+    <input placeholder="add title..." [(ngModel)]="entry.title" />
   </div>
 </div>
 <div class="row">
   <div class="col">
-    <a href="#" *ngIf="!hasTitle" (click)="hasTitle = !hasTitle">Add Title</a>
+    <h2>{{ entry?.datetime | date: 'short' }}</h2>
   </div>
 </div>
 <div class="row h-100">

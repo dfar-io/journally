@@ -19,7 +19,6 @@ export class EntryPageComponent implements OnInit {
   currentUser: User;
   isSaving: boolean;
   isNewEntry = true;
-  hasTitle = false;
 
   constructor(
     private entryService: EntryService,
