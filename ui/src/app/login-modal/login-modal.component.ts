@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Alert } from '../alert';
+import { ToastService } from '../shared/toast.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 
@@ -18,9 +19,9 @@ export class LoginModalComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -41,13 +42,14 @@ export class LoginModalComponent implements OnInit {
     this.userService.authenticateUser(user).subscribe(
       () => {
         this.isLoggingIn = false;
+        this.toastService.show('Logged in.', {
+          classname: 'bg-success text-light'
+        });
         this.activeModal.close();
       },
-      errorResponse => {
+      () => {
         this.isLoggingIn = false;
-        const errorMessage = errorResponse.error
-          ? errorResponse.error
-          : 'An unexpected error has occurred.';
+        const errorMessage = 'An unexpected error has occurred.';
         this.modalAlert = new Alert('danger', errorMessage);
       }
     );

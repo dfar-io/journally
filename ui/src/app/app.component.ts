@@ -5,6 +5,7 @@ import { AboutModalComponent } from './about-modal/about-modal.component';
 import { Alert } from './alert';
 import { LoginModalComponent } from './login-modal/login-modal.component';
 import { RegisterModalComponent } from './register-modal/register-modal.component';
+import { ToastService } from './shared/toast.service';
 import { User } from './user/user';
 import { UserService } from './user/user.service';
 
@@ -19,7 +20,8 @@ export class AppComponent {
   constructor(
     private modalService: NgbModal,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.userService.currentUser.subscribe(x => (this.currentUser = x));
   }
@@ -65,6 +67,7 @@ export class AppComponent {
 
   logout() {
     this.userService.logoutUser();
+    this.toastService.show('Logged out.', { classname: 'text-dark' });
     this.router.navigate(['']);
   }
 }

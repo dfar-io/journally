@@ -1,0 +1,16 @@
+:host {
+  left: 50%;
+  top: 92% !important;
+  right: auto !important;
+  transform: translate(-50%, -50%);
+}
+
+/* 200px+ max bootstrap width */
+@media (min-width: 1400px) {
+  :host {
+    top: 0 !important;
+    right: 0 !important;
+    left: auto;
+    transform: none;
+  }
+}

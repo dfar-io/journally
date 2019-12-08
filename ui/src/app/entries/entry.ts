@@ -4,3 +4,8 @@ export class Entry {
   content: string;
   title?: string;
 }
+
+export class EntryResolved {
+  entry: Entry;
+  error?: any;
+}

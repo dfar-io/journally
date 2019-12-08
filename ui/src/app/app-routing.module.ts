@@ -14,7 +14,7 @@ const routes: Routes = [
     path: 'entries/:id',
     component: EntryPageComponent,
     canActivate: [AuthGuard],
-    resolve: { entry: EntryResolver }
+    resolve: { resolvedEntry: EntryResolver }
   },
   {
     path: 'entries',

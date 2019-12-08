@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Alert } from '../alert';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
@@ -18,7 +18,6 @@ export class RegisterModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
-    private modalService: NgbModal,
     private userService: UserService
   ) {}
 
@@ -42,9 +41,10 @@ export class RegisterModalComponent implements OnInit {
         this.isRegistering = false;
         this.backToLogin(new Alert('success', `${response.email} registered.`));
       },
-      errorResponse => {
-        this.modalMessage = errorResponse.error;
+      () => {
         this.isRegistering = false;
+        const errorMessage = 'An unexpected error has occurred.';
+        this.modalMessage = errorMessage;
       }
     );
   }
