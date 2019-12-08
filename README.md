@@ -44,8 +44,7 @@ Requirements:
 3. Create an environment variable `JOURNALLY_CONN_STR` with the value:
    `Data Source=.\SQLEXPRESS;Initial Catalog=journally;Integrated Security=SSPI;`
 4. Create an environment variable `JOURNALLY_JWT_SECRET` with a value generated from https://mkjwk.org/.
-5. In `api/`, Run `dotnet ef database update` to apply database migrations.
-6. Use the following commands to build and start the API:
+5. Use the following commands to build and start the API:
 
 ```
 dotnet build
