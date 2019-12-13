@@ -1,5 +1,5 @@
 <nav class="navbar">
-  <a class="navbar-brand">Journally</a>
+  <a [routerLink]="['/']" class="navbar-brand">Journally</a>
   <a href="#" class="my-2 my-lg-0" (click)="onClickLogin()" *ngIf="!currentUser"
     >Login</a
   >

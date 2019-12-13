@@ -8,7 +8,6 @@ import {
   NgbModalModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { AboutModalComponent } from './about-modal/about-modal.component';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EntriesPageComponent } from './entries-page/entries-page.component';
 import { EntryPageComponent } from './entry-page/entry-page.component';
@@ -28,7 +27,6 @@ import { JwtInterceptor } from './user/jwt.interceptor';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     NgbModalModule,
     NgbAlertModule,
