@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AboutModalComponent } from './about-modal/about-modal.component';
@@ -14,7 +14,7 @@ import { UserService } from './user/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   currentUser: User;
 
   constructor(
@@ -24,6 +24,16 @@ export class AppComponent {
     private toastService: ToastService
   ) {
     this.userService.currentUser.subscribe(x => (this.currentUser = x));
+  }
+
+  ngOnInit() {
+    if (this.currentUser != null) {
+      this.userService.isTokenValid().subscribe(response => {
+        if (!response) {
+          this.logout('Session expired, please relogin.');
+        }
+      });
+    }
   }
 
   openLoginModal(alert: Alert = null) {
@@ -65,9 +75,9 @@ export class AppComponent {
     this.router.navigate(['']);
   }
 
-  logout() {
+  logout(text: string = 'Logged out.') {
     this.userService.logoutUser();
-    this.toastService.show('Logged out.', { classname: 'text-dark' });
+    this.toastService.show(text, { classname: 'text-dark' });
     this.router.navigate(['']);
   }
 }

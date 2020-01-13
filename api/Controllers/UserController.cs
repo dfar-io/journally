@@ -132,5 +132,32 @@ namespace HD.Journally.Controllers
 
       return new CreatedResult("https://example.com/api/entries/201", response);
     }
+
+    [FunctionName("VerifyToken")]
+    [RequestHttpHeader("Authorization", isRequired: true)]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(string))]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public IActionResult Run(
+      [HttpTrigger(
+        AuthorizationLevel.Anonymous,
+        "get",
+        Route = "user/verifyToken")]
+          HttpRequest req,
+      ILogger log)
+    {
+      string authenticatedEmail;
+      try
+      {
+        authenticatedEmail = _tokenService.GetEmailFromBearerToken(req);
+      }
+      catch (JournallyException ex)
+      {
+        log.LogWarning(
+          $"Authorization error when calling /verifyToken: {ex.Message}");
+        return new UnauthorizedResult();
+      }
+
+      return new OkObjectResult($"Authenticated user is: {authenticatedEmail}");
+    }
   }
 }

@@ -32,28 +32,5 @@ namespace HD.Journally
 
       return new OkObjectResult("API is functional.");
     }
-
-    [FunctionName("VerifyToken")]
-    [RequestHttpHeader("Authorization", isRequired: true)]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(string))]
-    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-    public IActionResult Run(
-      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "verifyToken")]
-        HttpRequest req,
-      ILogger log)
-    {
-      string authenticatedEmail;
-      try
-      {
-        authenticatedEmail = _tokenService.GetEmailFromBearerToken(req);
-      }
-      catch (JournallyException ex)
-      {
-        log.LogWarning($"Authorization error when calling /verifyToken: {ex.Message}");
-        return new UnauthorizedResult();
-      }
-
-      return new OkObjectResult($"Authenticated user is: {authenticatedEmail}");
-    }
   }
 }

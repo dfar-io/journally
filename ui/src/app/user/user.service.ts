@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/operators';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from './user';
 
@@ -40,6 +42,26 @@ export class UserService {
         return response;
       })
     );
+  }
+
+  isTokenValid(): Observable<boolean> {
+    return this.httpClient
+      .get(`${this.apiUrl}verifyToken`, {
+        responseType: 'text',
+        observe: 'response'
+      })
+      .pipe(
+        map(response => {
+          return response.status === 200;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401) {
+            return of(false);
+          }
+
+          return throwError(error);
+        })
+      );
   }
 
   isLoggedIn() {
