@@ -18,7 +18,7 @@ namespace HD.Journally
     [FunctionName("SwaggerUI")]
     [SwaggerIgnore]
     public static Task<HttpResponseMessage> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "/")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "")]
             HttpRequestMessage req,
         [SwashBuckleClient] ISwashBuckleClient swashBuckleClient)
     {
