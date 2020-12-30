@@ -16,7 +16,7 @@ namespace HD.Journally
     {
       ConfigureDatabase(builder);
       SetDependencyInjection(builder);
-      ConfigureJSONPayloads(builder);
+      //ConfigureJSONPayloads(builder);
     }
 
     private void ConfigureDatabase(IFunctionsHostBuilder builder)
@@ -60,19 +60,19 @@ namespace HD.Journally
 
     private void ConfigureJSONPayloads(IFunctionsHostBuilder builder)
     {
-      builder.Services.AddMvcCore()
-                      .AddJsonOptions(
-                        options =>
-                        {
-                          options.SerializerSettings.ContractResolver =
-                            new LowercaseContractResolver();
-                          options.SerializerSettings.NullValueHandling =
-                            NullValueHandling.Ignore;
-                          options.SerializerSettings.DateTimeZoneHandling =
-                            DateTimeZoneHandling.Utc;
-                        }
-                      )
-                      .AddJsonFormatters();
+      // builder.Services.AddMvcCore()
+      //                 .AddJsonOptions(
+      //                   options =>
+      //                   {
+      //                     options.SerializerSettings.ContractResolver =
+      //                       new LowercaseContractResolver();
+      //                     options.SerializerSettings.NullValueHandling =
+      //                       NullValueHandling.Ignore;
+      //                     options.SerializerSettings.DateTimeZoneHandling =
+      //                       DateTimeZoneHandling.Utc;
+      //                   }
+      //                 )
+      //                 .AddJsonFormatters();
     }
   }
 }

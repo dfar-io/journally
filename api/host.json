@@ -1,14 +1,22 @@
 {
-  "version": "2.0",
-  "extensions": {
-    "Swashbuckle": {
-      "Documents": [
-        {
-          "Title": "Journally API",
-          "Version": "v1",
-          "Description": "Provides access to Journally resources."
+    "version": "2.0",
+    "logging": {
+        "applicationInsights": {
+            "samplingExcludedTypes": "Request",
+            "samplingSettings": {
+                "isEnabled": true
+            }
         }
-      ]
+    },
+    "extensions": {
+        "Swashbuckle": {
+          "Documents": [
+            {
+              "Title": "Journally API",
+              "Version": "v1",
+              "Description": "Provides access to Journally resources."
+            }
+          ]
+        }
     }
-  }
 }
