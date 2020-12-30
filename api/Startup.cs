@@ -16,7 +16,13 @@ namespace HD.Journally
     {
       ConfigureDatabase(builder);
       SetDependencyInjection(builder);
-      //ConfigureJSONPayloads(builder);
+
+      var jwtSecret = Environment.GetEnvironmentVariable(Constants.JwtSecretKey);
+      if (string.IsNullOrWhiteSpace(jwtSecret))
+      {
+        throw new ArgumentNullException(
+          $"Environment variable {Constants.JwtSecretKey} not set.");
+      }
     }
 
     private void ConfigureDatabase(IFunctionsHostBuilder builder)
@@ -56,23 +62,6 @@ namespace HD.Journally
       builder.Services.AddScoped<ITokenService, TokenService>();
       builder.Services.AddScoped<IUserService, UserService>();
       builder.Services.AddScoped<IEntryService, EntryService>();
-    }
-
-    private void ConfigureJSONPayloads(IFunctionsHostBuilder builder)
-    {
-      // builder.Services.AddMvcCore()
-      //                 .AddJsonOptions(
-      //                   options =>
-      //                   {
-      //                     options.SerializerSettings.ContractResolver =
-      //                       new LowercaseContractResolver();
-      //                     options.SerializerSettings.NullValueHandling =
-      //                       NullValueHandling.Ignore;
-      //                     options.SerializerSettings.DateTimeZoneHandling =
-      //                       DateTimeZoneHandling.Utc;
-      //                   }
-      //                 )
-      //                 .AddJsonFormatters();
     }
   }
 }
