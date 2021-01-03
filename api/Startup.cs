@@ -2,10 +2,10 @@ using System;
 using HD.Journally.Models;
 using HD.Journally.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 [assembly: FunctionsStartup(typeof(HD.Journally.Startup))]
 
@@ -13,16 +13,6 @@ namespace HD.Journally
 {
   class Startup : FunctionsStartup
   {
-    public void Configure(IApplicationBuilder app)
-    {
-            // global cors policy
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
-    }
-
     public override void Configure(IFunctionsHostBuilder builder)
     {
       ConfigureDatabase(builder);
@@ -35,7 +25,9 @@ namespace HD.Journally
           $"Environment variable {Constants.JwtSecretKey} not set.");
       }
 
-      builder.Services.AddCors();
+      builder.Services.AddCors(options =>
+        options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
+      );
     }
 
     private void ConfigureDatabase(IFunctionsHostBuilder builder)

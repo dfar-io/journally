@@ -34,7 +34,7 @@ namespace HD.Journally.Controllers
     }
 
     [FunctionName("GetEntries")]
-    [RequestHttpHeader("Authorization", isRequired: true)]
+    [RequestHttpHeader("JournallyAuthorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Entry[]))]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public async Task<IActionResult> Get(
@@ -60,7 +60,7 @@ namespace HD.Journally.Controllers
     }
 
     [FunctionName("GetEntry")]
-    [RequestHttpHeader("Authorization", isRequired: true)]
+    [RequestHttpHeader("JournallyAuthorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Entry))]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public async Task<IActionResult> GetEntry(
@@ -87,7 +87,7 @@ namespace HD.Journally.Controllers
     }
 
     [FunctionName("UpdateEntry")]
-    [RequestHttpHeader("Authorization", isRequired: true)]
+    [RequestHttpHeader("JournallyAuthorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
@@ -153,7 +153,7 @@ namespace HD.Journally.Controllers
     }
 
     [FunctionName("CreateEntry")]
-    [RequestHttpHeader("Authorization", isRequired: true)]
+    [RequestHttpHeader("JournallyAuthorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Entry))]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]
@@ -212,7 +212,7 @@ namespace HD.Journally.Controllers
     }
 
     [FunctionName("DeleteEntry")]
-    [RequestHttpHeader("Authorization", isRequired: true)]
+    [RequestHttpHeader("JournallyAuthorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(string))]

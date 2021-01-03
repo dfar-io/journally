@@ -134,7 +134,7 @@ namespace HD.Journally.Controllers
     }
 
     [FunctionName("VerifyToken")]
-    [RequestHttpHeader("Authorization", isRequired: true)]
+    [RequestHttpHeader("JournallyAuthorization", isRequired: true)]
     [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(string))]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public IActionResult Run(

@@ -51,8 +51,8 @@ namespace HD.Journally.Services
 
     public string GetEmailFromBearerToken(HttpRequest request)
     {
-      if (!request.Headers.ContainsKey("Authorization") ||
-          !request.Headers.TryGetValue("Authorization", out var token) ||
+      if (!request.Headers.ContainsKey("JournallyAuthorization") ||
+          !request.Headers.TryGetValue("JournallyAuthorization", out var token) ||
           !token.First().Contains("Bearer"))
       {
         throw new JournallyException("No Bearer token provided.");
