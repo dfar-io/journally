@@ -1,6 +1,7 @@
 using System;
 using HD.Journally.Models;
 using HD.Journally.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,16 @@ namespace HD.Journally
 {
   class Startup : FunctionsStartup
   {
+    public void Configure(IApplicationBuilder app)
+    {
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
+    }
+
     public override void Configure(IFunctionsHostBuilder builder)
     {
       ConfigureDatabase(builder);
@@ -23,6 +34,8 @@ namespace HD.Journally
         throw new ArgumentNullException(
           $"Environment variable {Constants.JwtSecretKey} not set.");
       }
+
+      builder.Services.AddCors();
     }
 
     private void ConfigureDatabase(IFunctionsHostBuilder builder)
@@ -43,17 +56,15 @@ namespace HD.Journally
       var optionsBuilder = new DbContextOptionsBuilder<Context>();
       optionsBuilder.UseSqlServer(SqlConnection);
 
-      using (var context = new Context(optionsBuilder.Options))
+      using var context = new Context(optionsBuilder.Options);
+      try
       {
-        try
-        {
-          context.Database.Migrate();
-        }
-        catch (Exception e)
-        {
-          throw new Exception(
-            $"Error when migrating database: {e.Message}");
-        }
+        context.Database.Migrate();
+      }
+      catch (Exception e)
+      {
+        throw new Exception(
+          $"Error when migrating database: {e.Message}");
       }
     }
 
